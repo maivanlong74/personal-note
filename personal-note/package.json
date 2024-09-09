@@ -1,0 +1,46 @@
+{
+  "name": "personal-note",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/lodash.clonedeep": "^4.5.9",
+    "@vitejs/plugin-react-swc": "^3.7.0",
+    "firebase": "^10.13.1",
+    "react": "^18.3.1",
+    "react-cookie": "^7.2.0",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.3.0",
+    "react-js-cron": "^5.0.1",
+    "react-router-dom": "^6.26.1",
+    "react-scripts": "^3.0.1"
+  },
+  "devDependencies": {
+    "@material-tailwind/react": "^2.1.10",
+    "@mui/material": "^6.0.2",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-react": "^7.35.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.11",
+    "lodash.clonedeep": "^4.5.0",
+    "postcss": "^8.4.45",
+    "sass": "^1.78.0",
+    "tailwindcss": "^3.4.10",
+    "web-vitals": "^4.2.3"
+  }
+}

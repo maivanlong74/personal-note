@@ -1,0 +1,146 @@
+[
+  {
+    "id": null,
+    "assetNo": "V001",
+    "name": "No.1",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V002",
+    "name": "No.2",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V003",
+    "name": "No.3",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V004",
+    "name": "No.4",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V005",
+    "name": "No.5",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V006",
+    "name": "No.6",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V007",
+    "name": "No.7",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V008",
+    "name": "No.8",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V010",
+    "name": "VELL",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V011",
+    "name": "Probox",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V012",
+    "name": "軽トラ",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V800",
+    "name": "リース車",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V994",
+    "name": "自車1",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V995",
+    "name": "自車2",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V996",
+    "name": "自車3",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V997",
+    "name": "おまかせ1",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V998",
+    "name": "おまかせ2",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  },
+  {
+    "id": null,
+    "assetNo": "V999",
+    "name": "おまかせ3",
+    "email": null,
+    "capacity": null,
+    "carInspectionExpiryDate": null
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "e96pH8v6dxiMjgBzA6EXQm",
+    "no": "00",
+    "name": "斉藤 安元",
+    "email": "ingco@ing1989.com",
+    "role": "admin",
+    "quantityFlag": false,
+    "visible": true
+  },
+  {
+    "id": "",
+    "no": "01",
+    "name": "long",
+    "email": "maivanlong143@gmail.com",
+    "role": "admin",
+    "quantityFlag": false,
+    "visible": true
+  },
+  {
+    "id": "nC6a3KKPSFJvLcrAwWnXv2",
+    "no": "02",
+    "name": "表 昭平",
+    "email": "syohei.omote@ing1989.com",
+    "role": "admin",
+    "quantityFlag": false,
+    "visible": true
+  },
+  {
+    "id": "qJbnsexLxUyJUYGqNhs33r",
+    "no": "03",
+    "name": "中坊 一成",
+    "email": "issei.nakabou@ing1989.com",
+    "role": "admin",
+    "quantityFlag": false,
+    "visible": true
+  }
+]

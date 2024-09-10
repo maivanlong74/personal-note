@@ -15,7 +15,6 @@ export const UserContextProvider = ({children}) => {
     const auth = getAuth();
     signOut(auth).then(() => {
       setUserProfile(null);
-      console.log('Sign-out successful.')
     }).catch((error) => {
       console.log(error);
     })

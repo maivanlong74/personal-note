@@ -37,12 +37,10 @@ export const LoginButton = () => {
   const handleLogin = () => {
     if (getUserAgent() === undefined) {
       signInWithGoogleRedirect().then((result) => {
-        console.log(result);
         navigate('/');
       });
     } else {
       signInWithGooglePopup().then((result) => {
-        console.log(result);
         navigate('/');
       });
     }

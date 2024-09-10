@@ -1,8 +1,10 @@
 
 import { useEffect, useState } from 'react';
 import { UserService } from '../../services/UserService';
+import { useUserContext } from '@contexts/UserContext';
 
 export default function HomePage() {
+  const { userProfile } = useUserContext();
   // const [testUser, setTestUser] = useState([]);
   // useEffect(() => {
   //   UserService.getAll().then(
@@ -13,11 +15,6 @@ export default function HomePage() {
   //     }
   //   );
   // }, []);
-
-  // useEffect(() => {
-  //   console.log("testUser: ", testUser);
-    
-  // }, [testUser]);
 
   return (
     <div>

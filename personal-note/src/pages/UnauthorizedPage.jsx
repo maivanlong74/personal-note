@@ -9,7 +9,6 @@ export default function UnauthorizedPage() {
   const navigate = useNavigate();
   React.useEffect(() => {
     const ensureAuthorized = () => {
-      // console.log('Login::Profile', userProfile);
       if (isAuthorized && userProfile?.isActive) {
         navigate('/');
       }

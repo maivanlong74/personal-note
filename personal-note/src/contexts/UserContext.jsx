@@ -11,6 +11,7 @@ export const useUserContext = () => useContext(UserContext);
 export const UserContextProvider = ({children}) => {
   const [userProfile, setUserProfile] = useState();
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [canManage, setCanManage] = useState(false);
 
   const logout = () => {
     const auth = getAuth();
@@ -27,21 +28,22 @@ export const UserContextProvider = ({children}) => {
       if (user && !userProfile) {
         if (user && user.email) {
           const userInfo = await UserService.getUserByEmail(user.email);
-          if(userInfo){
-            setUserProfile({
-              id: userInfo.id,
-              uid: user.uid,
-              email: user.email,
-              displayName: user.displayName,
-              roles: userInfo.roles,
-              isActive: userInfo.isActive,
-            })
-          }else{
-            setUserProfile({
-              email: user.email,
-              isActive: false,
-            });
+          const userProfile = userInfo ? {
+            id: userInfo.id,
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            roles: userInfo.roles,
+            isActive: userInfo.isActive,
+          } : {
+            email: user.email,
+            isActive: false,
+            roles: [ROLE.WORKER]
           }
+          setUserProfile(userProfile);
+          const canManage = ROLE_MANAGEMENT.some(role => userProfile?.roles?.includes(role));
+          setCanManage(canManage);
         }
       }
     });
@@ -51,6 +53,6 @@ export const UserContextProvider = ({children}) => {
     ensureAuthorized();
   }, []);
 
-  return <UserContext.Provider value={{userProfile, ensureAuthorized, isAuthorized, logout}}>{children}
+  return <UserContext.Provider value={{userProfile, ensureAuthorized, isAuthorized, logout, canManage, setCanManage}}>{children}
         </UserContext.Provider>
 }

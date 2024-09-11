@@ -1,17 +1,23 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useUserContext } from '@contexts/UserContext';
 import logo from "@assets/images/logo.svg";
 import { LoginButton } from '@components/Button/LoginButton';
-
+import { ROLE_MANAGEMENT } from '../constants/ClientConstants';
 
 export default function LoginPage() {
   const { userProfile } = useUserContext();
+  const location = useLocation();
   const navigate = useNavigate();
+
+  
+
   useEffect(() => {
     const ensureAuthorized = () => {
       if (userProfile) {
-        navigate('/home');
+        const canManage = ROLE_MANAGEMENT.some(role => userProfile?.roles?.includes(role));
+        const { from } = location.state || { from: { pathname: canManage ? "/management" : "/home" } };
+        navigate(from, { replace: true});
       }
     };
 

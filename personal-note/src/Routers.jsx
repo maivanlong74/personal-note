@@ -29,7 +29,7 @@ export const Routers = () => {
             </Route>
 
             <Route element={<MainPageLayoutAdmin />}>
-              <Route path={'/managment'} element={<ManagementPage />} />
+              <Route path={'/management'} element={<ManagementPage />} />
             </Route>
 
             <Route element={<MainPageLayoutClient />}>

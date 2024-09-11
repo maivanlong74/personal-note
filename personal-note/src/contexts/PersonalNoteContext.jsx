@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useUserContext } from '@contexts/UserContext';
 import { PersonalNoteStatus } from '@constants/status';
+import Loading from '@components/Loading/Loading';
 
 const PersonalNoteContext = createContext()
 export const usePersonalNoteContext = () => useContext(PersonalNoteContext);
@@ -27,9 +28,11 @@ export const PersonalNoteProvider = ({children}) => {
   useEffect(() => {
     if (userProfile) {
       setCurrentUser(userProfile)
-    }
+      }
   }, [userProfile]);
 
-  return <PersonalNoteContext.Provider value={initValues}>{children}
+  return <PersonalNoteContext.Provider value={initValues}>
+          {PersonalNoteStatus === PersonalNoteStatus.LOADING && <Loading PersonalNoteStatus={PersonalNoteStatus} />}
+          {children}
         </PersonalNoteContext.Provider>
 }

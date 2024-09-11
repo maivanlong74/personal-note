@@ -11,26 +11,31 @@ import logo from "@assets/images/logo.svg";
 
 export default function SplashPage() {
   const { setErrorMessage } = useAppContext();
-  const { ensureAuthorized } = useUserContext();
+  const {isAuthorized, canManage} = useUserContext();
 
   const navigate = useNavigate();
 
   const checkAuthen = () => {
     setErrorMessage(null);
     auth.onAuthStateChanged((user) => {
-      if (user) {
-        ensureAuthorized;
+      if(user) {
         DatabaseService.canConnect()
-          .then(() => {
-            console.log('Authenticated, navigate to managment page');
-            navigate('/managment');
-          })
-          .catch((error) => {
-            setErrorMessage(error.message);
-            navigate('/error')
-          });
-      } else {
-        console.log('Navigate to login page');
+        .then(()=> {
+          if (isAuthorized) {
+            if (canManage) {
+              navigate('/management');
+            } else {
+              navigate('/home');
+            }
+          } else {
+            navigate('/login');
+          }
+        })
+        .catch((error) => {
+          setErrorMessage(error.message);
+          navigate('/error')
+        });
+      }else{
         navigate('/login');
       }
     });

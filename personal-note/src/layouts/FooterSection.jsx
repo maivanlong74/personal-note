@@ -1,18 +1,19 @@
-import * as React from 'react';
+import { useEffect, useState } from "react";
 // import { Button } from '@material-tailwind/react'
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '@contexts/UserContext';
 import { version } from '../../package.json';
 
+
 export const FooterSection = () => {
   const { userProfile, logout } = useUserContext();
 
-  const [email, setEmail] = React.useState(userProfile?.email)
-  const [roles, setRoles] = React.useState(userProfile?.roles)
+  const [email, setEmail] = useState(userProfile?.email)
+  const [roles, setRoles] = useState(userProfile?.roles)
 
   const navigate = useNavigate();
-  React.useEffect(() => {
+  useEffect(() => {
     const ensureAuthorized = () => {
       if (!userProfile) {
         return;

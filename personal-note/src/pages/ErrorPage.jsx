@@ -1,15 +1,15 @@
-import * as React from 'react';
+import { useEffect, useState } from "react";
 import { MessagesError } from "@components/MessagesError";
 import { LogoutButton } from '@components/Button/LogoutButton';
 import { RetryButton } from '@components/Button/RetryButton';
-
 import { useAppContext } from '@contexts/AppContext';
+
 
 export default function ErrorPage() {
   const {errorMessage} = useAppContext();
-  const [error, setError] = React.useState('')
+  const [error, setError] = useState('')
 
-  React.useEffect(() => {
+  useEffect(() => {
     const errMsg = errorMessage || `Lỗi đăng nhập!!!`
     setError(errMsg );
   }, [errorMessage]);

@@ -1,13 +1,14 @@
-import * as React from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from '@contexts/UserContext';
 import { LogoutButton } from '../components/Button/LogoutButton';
+
 
 export default function UnauthorizedPage() {
   const {userProfile, isAuthorized} = useUserContext();
 
   const navigate = useNavigate();
-  React.useEffect(() => {
+  useEffect(() => {
     const ensureAuthorized = () => {
       if (isAuthorized && userProfile?.isActive) {
         navigate('/');

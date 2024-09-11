@@ -1,15 +1,16 @@
-import * as React from 'react'
+import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "@config/firebase";
 import { getAuth, signOut } from "firebase/auth";
 import { UserService } from "../services/UserService";
 
-const UserContext = React.createContext()
-export const useUserContext = () => React.useContext(UserContext);
+
+const UserContext = createContext()
+export const useUserContext = () => useContext(UserContext);
 
 // eslint-disable-next-line react/prop-types
 export const UserContextProvider = ({children}) => {
-  const [userProfile, setUserProfile] = React.useState();
-  const [isAuthorized, setIsAuthorized] = React.useState(false);
+  const [userProfile, setUserProfile] = useState();
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   const logout = () => {
     const auth = getAuth();
@@ -46,7 +47,7 @@ export const UserContextProvider = ({children}) => {
     });
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     ensureAuthorized();
   }, []);
 

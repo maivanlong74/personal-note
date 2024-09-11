@@ -1,20 +1,20 @@
-import * as React from 'react'
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useUserContext } from '@contexts/UserContext';
 import { PersonalNoteStatus } from '@constants/status';
 
-const PersonalNoteContext = React.createContext()
-export const usePersonalNoteContext = () => React.useContext(PersonalNoteContext);
+const PersonalNoteContext = createContext()
+export const usePersonalNoteContext = () => useContext(PersonalNoteContext);
 
 // eslint-disable-next-line react/prop-types
 export const PersonalNoteProvider = ({children}) => {
   const { userProfile } = useUserContext();
 
-  const [currentUser, setCurrentUser] = React.useState(null)
-  const [personalNoteStatus, setPersonalNoteStatus] = React.useState(PersonalNoteStatus.IDLE)
-  const [reload, setReload] = React.useState(null);
+  const [currentUser, setCurrentUser] = useState(null)
+  const [personalNoteStatus, setPersonalNoteStatus] = useState(PersonalNoteStatus.IDLE)
+  const [reload, setReload] = useState(null);
 
-  const [memberOptions, setMemberOptions] = React.useState([])
-  const [vehicleOptions, setVehicleOptions] = React.useState([])
+  const [memberOptions, setMemberOptions] = useState([])
+  const [vehicleOptions, setVehicleOptions] = useState([])
 
   const initValues = {
       currentUser,
@@ -24,7 +24,7 @@ export const PersonalNoteProvider = ({children}) => {
       vehicleOptions, setVehicleOptions,
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (userProfile) {
       setCurrentUser(userProfile)
     }

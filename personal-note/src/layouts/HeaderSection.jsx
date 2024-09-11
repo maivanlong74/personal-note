@@ -1,4 +1,3 @@
-import * as React from 'react';
 
 const {VITE_PORTAL_URL: portalUrl} = import.meta.env;
 

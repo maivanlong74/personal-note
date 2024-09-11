@@ -22,8 +22,8 @@ export default function SplashPage() {
         ensureAuthorized;
         DatabaseService.canConnect()
           .then(() => {
-            console.log('Authenticated, navigate to home page');
-            navigate('/home');
+            console.log('Authenticated, navigate to managment page');
+            navigate('/managment');
           })
           .catch((error) => {
             setErrorMessage(error.message);

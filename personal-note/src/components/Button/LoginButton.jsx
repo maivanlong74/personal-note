@@ -1,4 +1,4 @@
-// import { Button } from '@material-tailwind/react';
+import { Button } from '@material-tailwind/react';
 import {
   signInWithGooglePopup,
   signInWithGoogleRedirect,
@@ -48,14 +48,10 @@ export const LoginButton = () => {
 
   return (
     <div className="flex justify-center mx-auto">
-      {/* <Button size="lg" variant="outlined" color="white" className="flex items-center gap-3" onClick={handleLogin}>
+      <Button size="lg" variant="outlined" color="white" className="flex items-center gap-3" onClick={handleLogin}>
         <img src={iconGoogle} alt="metamask" className="h-6 w-6" />
         Sign in with Google
-      </Button> */}
-      <button className="text-white flex items-center gap-3" onClick={handleLogin}>
-        <img src={iconGoogle} alt="metamask" className="h-6 w-6" />
-        Sign in with Google
-      </button>
+      </Button>
     </div>
   );
 };

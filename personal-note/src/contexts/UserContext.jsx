@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "@config/firebase";
 import { getAuth, signOut } from "firebase/auth";
 import { UserService } from "../services/UserService";
-
+import { ROLE, ROLE_MANAGEMENT } from '../constants/ClientConstants';
 
 const UserContext = createContext()
 export const useUserContext = () => useContext(UserContext);

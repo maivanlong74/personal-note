@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { HeaderSection } from '@layouts/HeaderSection'
-import { FooterSection } from '@layouts/FooterSection'
 import { PersonalNoteProvider } from '@contexts/PersonalNoteContext';
 import { useUserContext } from '../contexts/UserContext';
+import ToolSideBar from '@components/SideBar/ToolSideBar';
 
 export const MainPageLayoutClient = () => {
   const { userProfile } = useUserContext();
@@ -14,11 +14,19 @@ export const MainPageLayoutClient = () => {
   }
 
   return (
-    <div className='flex flex-col h-screen justify-between mb-24'>
+    <div className='h-screen bg-gray-700 text-sm'>
       <PersonalNoteProvider>
-        <HeaderSection />
-        <Outlet />
-        <FooterSection />
+        <div className='h-screen w-full flex'>
+          <div className='w-auto h-full'>
+            <ToolSideBar showSideBar={true} typePages="desktop" />
+          </div>
+          <div className='w-full h-full flex flex-col'>
+            <HeaderSection />
+            <div className="flex-grow overflow-y-auto p-5">
+              <Outlet />
+            </div>
+          </div>
+        </div>
       </PersonalNoteProvider>
     </div>
   );

@@ -6,10 +6,9 @@ import '@assets/css/sideBar.scss';
 import { useUserContext } from '@contexts/UserContext';
 import logo from '@assets/images/logo.svg';
 import user from '@assets/images/user@2x.png';
-import { MultiplyButton } from '@components/Button/MultiplyButton';
 import { version } from '../../../package.json';
 
-const ToolSideBar = ({ showSideBar, typePages, setShowSideBar }) => {
+const ToolSideBar = ({ showSideBar }) => {
   const { userProfile, logout } = useUserContext();
   const [name, setName] = useState(userProfile?.displayName);
   const [photoURL, setPhotoURL] = useState(userProfile?.photoURL);
@@ -46,27 +45,10 @@ const ToolSideBar = ({ showSideBar, typePages, setShowSideBar }) => {
       });
   };
 
-  const handleCloseSideBar = () => {
-    if (typePages != "desktop") {
-      setShowSideBar(false)
-    }
-  }
-
-  let showHidden = '';
-  if (typePages === 'desktop') showHidden = 'tool-side-bar';
-  else if (typePages === 'ipad')
-    showHidden = 'fixed top-0 left-0 bottom-0 text-white z-10';
-
   return (
-    <div className={`flex flex-col items-center w-[280px] min-w-[280px] min-h-screen bg-gray-900 text-white text-left text-2xl border-0 box-border p-4
-        transition duration-300 overflow-auto scroll-bar-none ${showHidden}
+    <div className={`flex flex-col items-center w-[280px] min-w-[280px] h-full bg-[#7e6f2c] text-white text-left text-2xl rounded-[40px] border-0 box-border p-4
+        transition duration-300 overflow-auto scroll-bar-none
         ${showSideBar ? 'translate-x-0' : '-translate-x-full'}`}>
-      <div className="fixed top-3 right-3 hidden ipad:block w-8 h-8 z-10">
-        <MultiplyButton
-          className="flex items-center justify-center w-8 h-8"
-          click={handleCloseSideBar}
-        />
-      </div>
       <Link
         to={portalUrl}
         className="w-full flex flex-col items-center justify-start pb-2 box-border relative gap-2 text-center text-white no-underline"
@@ -192,7 +174,7 @@ const ToolSideBar = ({ showSideBar, typePages, setShowSideBar }) => {
       <div className="w-full flex flex-col items-center justify-start py-0 box-border">
         <div className="w-full flex flex-col items-center justify-start mt-2 ipad:mb-24">
           <img
-            className="w-10 relative h-10 object-cover mix-blend-hard-light rounded-full"
+            className="w-10 relative h-10 object-cover rounded-full"
             alt="user-profile"
             src={photoURL || user}
           />

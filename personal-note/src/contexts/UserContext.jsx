@@ -12,6 +12,7 @@ export const UserContextProvider = ({children}) => {
   const [userProfile, setUserProfile] = useState();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [canManage, setCanManage] = useState(false);
+  const [isShow, setIsShow] = useState(true);
 
   const logout = () => {
     const auth = getAuth();
@@ -53,6 +54,6 @@ export const UserContextProvider = ({children}) => {
     ensureAuthorized();
   }, []);
 
-  return <UserContext.Provider value={{userProfile, ensureAuthorized, isAuthorized, logout, canManage, setCanManage}}>{children}
+  return <UserContext.Provider value={{userProfile, ensureAuthorized, isAuthorized, logout, canManage, setCanManage, isShow, setIsShow}}>{children}
         </UserContext.Provider>
 }

@@ -9,7 +9,7 @@ $color-disabled: #a0a0a0;
 $color-placeholder: #a1a1aa;
 html,
 body {
-  @apply bg-[#0d1a34] font-notosans;
+  @apply bg-[#F7F7F8] font-notosans;
 }
 label {
   color: white;
@@ -160,4 +160,8 @@ div.Mui-disabled {
   }
 
 
+}
+
+.updateBgHeader{
+  background-image: url("https://cellphones.com.vn/sforum/wp-content/uploads/2024/02/anh-thien-nhien-69.jpg");
 }

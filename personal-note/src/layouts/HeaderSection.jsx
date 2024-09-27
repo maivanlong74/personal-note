@@ -1,12 +1,11 @@
-
-const {VITE_PORTAL_URL: portalUrl} = import.meta.env;
+import bgHeader from '@assets/images/anh-mo-ta.jpg';
 
 export const HeaderSection = () => {
 
   return (
-    <nav className="w-full bg-main lg:border-b -mt-2 z-20">
-      <div className="px-4 py-3 sm:px-6 lg:px-8 ">
-        <span className="text-white">Đây là header</span>
+    <nav className={`w-full lg:border-b -mt-2 z-20 border-b-slate-400 updateBgHeader`}>
+      <div className="px-4 py-20 sm:px-6 lg:px-8 ">
+        {/* <span className="text-black">Đây là header</span> */}
       </div>
     </nav>
   );

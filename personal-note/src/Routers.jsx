@@ -13,7 +13,7 @@ const UnauthorizedPage = lazy(() => import('@pages/UnauthorizedPage'));
 const ErrorPage = lazy(() => import('@pages/ErrorPage'));
 
 //Admin
-import ManagementPage from '@pages/adminPage/ManagementPage';
+import ManagementUserPage from '@pages/adminPage/ManagementUserPage';
 
 //Client
 import HomePage from '@pages/clientPage/HomePage';
@@ -29,7 +29,7 @@ export const Routers = () => {
             </Route>
 
             <Route element={<MainPageLayoutAdmin />}>
-              <Route path={'/management'} element={<ManagementPage />} />
+              <Route path={'/management-user-page'} element={<ManagementUserPage />} />
             </Route>
 
             <Route element={<MainPageLayoutClient />}>

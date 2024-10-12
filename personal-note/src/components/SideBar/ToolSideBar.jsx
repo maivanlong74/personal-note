@@ -54,33 +54,30 @@ const ToolSideBar = ({ showSideBar }) => {
         className="w-full flex flex-col items-center justify-start pb-2 box-border relative gap-2 text-center text-white no-underline"
       >
         <img className="w-[77.3px] relative h-[50px] z-[0]" alt="" src={logo} />
-        <div className="text-lg font-bigger">アイエヌジー株式会社</div>
-        <div className="w-full text-base text-gray-100 text-icons-description-text flex items-center justify-center font-bronco">
-          ING CO., LTD.
-        </div>
+        <div className="text-lg font-bigger">Jade Dragon</div>
       </Link>
       {/* MAIN */}
       <div className="w-full flex flex-col items-center justify-start py-0 box-border">
         <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] uppercase font-bold">
-          <div className="w-full text-left font-bigger">MAIN</div>
+          <div className="w-full text-left font-bigger">QUẢN LÝ</div>
         </div>
         <div className="w-full flex flex-col items-center box-border gap-1 pb-2">
           <div
-            className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/management'
+            className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/management-user-page'
               ? 'hover:bg-orange hover:text-gray-900'
               : ''
               }`}
           >
             <Link
-              to="/management"
+              to="/management-user-page"
               className={`w-full text-left py-1 text-sm no-underline
-                  ${location.pathname === '/management'
+                  ${location.pathname === '/management-user-page'
                   ? 'text-orange'
                   : 'text-white hover:bg-orange hover:text-gray-900'
                 }
                 `}
             >
-              道具概要
+              Danh sách người dùng
             </Link>
           </div>
           <div
@@ -98,7 +95,7 @@ const ToolSideBar = ({ showSideBar }) => {
                 }
                 `}
             >
-              現場報告
+              Danh sách ghi chú
             </Link>
           </div>
           <div
@@ -116,7 +113,7 @@ const ToolSideBar = ({ showSideBar }) => {
                 }
                 `}
             >
-              道具のまとめ
+              Danh sách phê duyệt
             </Link>
           </div>
           <div
@@ -141,13 +138,13 @@ const ToolSideBar = ({ showSideBar }) => {
         <div className="w-full rounded bg-gray-500 h-[0.1rem]" />
       </div>
       {/* TOOL */}
-      <div className="w-full flex flex-col items-center py-0 box-border">
+      {/* <div className="w-full flex flex-col items-center py-0 box-border">
         <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] pt-2 uppercase font-bold">
           <div className="w-full text-left font-bigger">TOOL</div>
         </div>
         
         <div className="w-full rounded bg-gray-500 h-[0.1rem]" />
-      </div>
+      </div> */}
       {/* ACCOUNT */}
       <div className="w-full flex flex-col items-center justify-start py-0 box-border">
         <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] pt-2 uppercase font-bold">
@@ -160,17 +157,18 @@ const ToolSideBar = ({ showSideBar }) => {
               className="w-full text-left text-sm text-white no-underline"
               onClick={onLockOut}
             >
-              ログアウト
+              Đăng xuất
             </Link>
           </div>
-          <div className="w-full py-1 h-full hover:bg-orange hover:text-gray-900 flex justify-center self-stretch relative">
+          {/* <div className="w-full py-1 h-full hover:bg-orange hover:text-gray-900 flex justify-center self-stretch relative">
             <Link to="" className="w-full text-left text-sm text-white no-underline">
               設定
             </Link>
-          </div>
+          </div> */}
         </div>
         <div className="w-full rounded bg-gray-500 h-[0.1rem]" />
       </div>
+      <div className='h-full'></div>
       <div className="w-full flex flex-col items-center justify-start py-0 box-border">
         <div className="w-full flex flex-col items-center justify-start mt-2 ipad:mb-24">
           <img

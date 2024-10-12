@@ -16,7 +16,7 @@ export default function LoginPage() {
     const ensureAuthorized = () => {
       if (userProfile) {
         const canManage = ROLE_MANAGEMENT.some(role => userProfile?.roles?.includes(role));
-        const { from } = location.state || { from: { pathname: canManage ? "/management" : "/home" } };
+        const { from } = location.state || { from: { pathname: canManage ? "/management-user-page" : "/home" } };
         navigate(from, { replace: true});
       }
     };

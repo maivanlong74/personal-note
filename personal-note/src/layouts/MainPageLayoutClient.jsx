@@ -33,7 +33,7 @@ export const MainPageLayoutClient = () => {
             )}
           </div>
           <div className='w-full h-full flex flex-col'>
-            <HeaderSection />
+            {/* <HeaderSection /> */}
             <div className={`flex-grow overflow-y-auto p-5 ${isShow ? '' : 'z-10'}`}>
               <Outlet />
             </div>

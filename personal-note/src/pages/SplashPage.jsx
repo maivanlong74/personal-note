@@ -23,7 +23,7 @@ export default function SplashPage() {
         .then(()=> {
           if (isAuthorized) {
             if (canManage) {
-              navigate('/management');
+              navigate('/management-user-page');
             } else {
               navigate('/home');
             }

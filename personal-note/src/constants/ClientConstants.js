@@ -59,12 +59,12 @@ export const TOOL_SCAN_TYPE = {
 export const ROLE = {
   ADMIN: 'admin',
   MANAGER: 'manager',
-  LEADER: 'leader',
-  WORKER: 'worker'
+  CLIENT: 'client',
+  SPAM: 'spam'
 }
 
 export const ROLE_MANAGEMENT = [
-  ROLE.ADMIN, ROLE.MANAGER, ROLE.LEADER
+  ROLE.ADMIN, ROLE.MANAGER
 ]
 
 export const STATUS_SCHEDULE = {

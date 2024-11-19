@@ -9,8 +9,9 @@ import user from '@assets/images/user@2x.png';
 import { version } from '../../../package.json';
 
 const ToolSideBar = ({ showSideBar }) => {
-  const { userProfile, logout } = useUserContext();
+  const { userProfile, logout, checkPage } = useUserContext();
   const [name, setName] = useState(userProfile?.displayName);
+  const [roles, setRoles] = useState(userProfile?.roles);
   const [photoURL, setPhotoURL] = useState(userProfile?.photoURL);
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,8 +27,10 @@ const ToolSideBar = ({ showSideBar }) => {
         navigate('/error');
         return;
       }
+
       setName(userProfile.displayName);
       setPhotoURL(userProfile.photoURL);
+      setRoles(userProfile.roles);
     };
     ensureAuthorized();
   }, [userProfile]);
@@ -46,7 +49,7 @@ const ToolSideBar = ({ showSideBar }) => {
   };
 
   return (
-    <div className={`flex flex-col items-center w-[280px] min-w-[280px] h-full bg-[#7e6f2c] text-white text-left text-2xl rounded-[40px] border-0 box-border p-4
+    <div className={`flex flex-col items-center w-[280px] min-w-[280px] h-full bg-[#A04747] text-white text-left text-2xl rounded-[40px] border-0 box-border p-4
         transition duration-300 overflow-auto scroll-bar-none
         ${showSideBar ? 'translate-x-0' : '-translate-x-full'}`}>
       <Link
@@ -59,7 +62,9 @@ const ToolSideBar = ({ showSideBar }) => {
       {/* MAIN */}
       <div className="w-full flex flex-col items-center justify-start py-0 box-border">
         <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] uppercase font-bold">
-          <div className="w-full text-left font-bigger">QUẢN LÝ</div>
+          <div className={`w-full text-left font-bigger`}>
+            {checkPage ? 'Trang Admin' : `Đây là trang cá nhân của ${name}`}
+          </div>
         </div>
         <div className="w-full flex flex-col items-center box-border gap-1 pb-2">
           <div

@@ -1,12 +1,10 @@
 import { Link } from 'react-router-dom';
+import AdminPageRedirection from '../../components/Redirection/AdminPageRedirection';
 
 export default function HomePage() {
   return (
-    <div className="">
-      <h1 className='text-red-900'>Đây là home page</h1>
-      <div>
-        <Link to="/management">Đi đến Admin</Link>
-      </div>
+    <div className='p-2'>
+      <AdminPageRedirection />
     </div>
   );
 }

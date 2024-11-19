@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "@contexts/AppContext";
 import { useUserContext } from '@contexts/UserContext';
 
-import { DatabaseService } from "@services/DatabaseService";
+import { UserService } from "@services/UserService";
 
 import logo from "@assets/images/logo.svg";
 
 export default function SplashPage() {
   const { setErrorMessage } = useAppContext();
-  const {isAuthorized, canManage} = useUserContext();
+  const {isAuthorized, canManage, setCheckPage} = useUserContext();
 
   const navigate = useNavigate();
 
@@ -19,9 +19,10 @@ export default function SplashPage() {
     setErrorMessage(null);
     auth.onAuthStateChanged((user) => {
       if(user) {
-        DatabaseService.canConnect()
+        UserService.canConnect()
         .then(()=> {
           if (isAuthorized) {
+            setCheckPage(canManage);
             if (canManage) {
               navigate('/management-user-page');
             } else {

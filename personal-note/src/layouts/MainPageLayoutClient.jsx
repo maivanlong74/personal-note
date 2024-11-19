@@ -19,13 +19,13 @@ export const MainPageLayoutClient = () => {
   }
 
   return (
-    <div className='h-screen bg-[#F7F7F8] text-sm'>
+    <div className='h-screen text-sm'>
       <PersonalNoteProvider>
         <div className='h-screen w-full flex items-center'>
           <div className={`w-auto h-[60%] min-h-[60%] flex items-center absolute ${isShow ? '' : 'z-0'}`}>
             <ToolSideBar showSideBar={isShow} />
           </div>
-          <div onClick={changeShowMenu} className={`absolute ${isShow ? 'right-0' : ''} h-[10%] min-h-[10%] flex items-center z-20 bg-[#7e6f2c]`}>
+          <div onClick={changeShowMenu} className={`absolute ${isShow ? 'right-0' : ''} h-[10%] min-h-[10%] flex items-center z-20 bg-[#A04747]`}>
             {isShow ? (
               <BiSolidChevronLeftCircle className='h-[30px] w-[30px]' />
             ) : (

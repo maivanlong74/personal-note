@@ -4,12 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
-$color-main: #0d1a34;
-$color-disabled: #a0a0a0;
-$color-placeholder: #a1a1aa;
+$color-main: #ecf0f1;
+$color-disabled: #ce1414;
+$color-placeholder: #0b0b14;
 html,
 body {
-  @apply bg-[#343131] font-notosans;
+  @apply bg-[#ecf0f1] font-notosans;
 }
 label {
   color: white;

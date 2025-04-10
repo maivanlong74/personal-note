@@ -22,11 +22,11 @@ export const MainPageLayoutAdmin = () => {
     <div className='h-screen text-sm'>
       <PersonalNoteProvider>
         <div className='h-screen w-full flex items-center'>
-          <div className={`w-auto h-[60%] min-h-[60%] flex items-center absolute`}>
+          <div className={`${isShow ? 'w-[280px] min-w-[280px]' : 'w-[10px]'} h-full flex items-center relative`}>
             <ToolSideBar/>
           </div>
           <div className='w-full h-full flex flex-col'>
-            <div className={`flex-grow overflow-y-auto p-5 ${isShow ? '' : 'z-10'}`}>
+            <div className={`flex-grow overflow-y-auto p-5`}>
               <Outlet />
             </div>
           </div>

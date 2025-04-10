@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+/** モーダル全体 */
+#commonConfirmModal {
+	z-index: 9999;
+}
+
+/** ヘッダー */
+#commonConfirmModalHeader {
+	font-size: 18px;
+	color: white;
+	padding: 15px;
+	background-color: #337AB7;
+}
+
+/** タイトルアイコン */
+.glyphicon {
+	margin-right: 5px;
+}
+
+/** 「OK」ボタン */
+#commonConfirmModalOkButton {
+	background-color: #00BCD4;
+	color: white;
+	margin: 5px 0px;
+}
+
+/** 「キャンセル」ボタン */
+#commonConfirmModalCancelButton {
+	margin: 5px 0px;
+    margin-left: 10px;
+}
+
+/** ボディ */
+/* #commonConfirmModalBody {
+	padding-bottom: 0;
+	font-size: larger;
+}
+*/
+ 
+/** フッター */
+.modal-footer {
+	text-align: center
+/* 	padding-top: 0*/
+}

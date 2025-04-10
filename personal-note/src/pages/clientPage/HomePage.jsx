@@ -3,7 +3,7 @@ import AdminPageRedirection from '../../components/Redirection/AdminPageRedirect
 
 export default function HomePage() {
   return (
-    <div className='p-2'>
+    <div className='border border-black w-full h-full'>
       <AdminPageRedirection />
     </div>
   );

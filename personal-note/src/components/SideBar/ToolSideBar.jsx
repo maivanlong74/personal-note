@@ -7,9 +7,10 @@ import { useUserContext } from '@contexts/UserContext';
 import logo from '@assets/images/logo.svg';
 import user from '@assets/images/user@2x.png';
 import { version } from '../../../package.json';
+import { BiSolidChevronRightCircle, BiSolidChevronLeftCircle } from "react-icons/bi";
 
-const ToolSideBar = ({ showSideBar }) => {
-  const { userProfile, logout, checkPage } = useUserContext();
+const ToolSideBar = () => {
+  const { userProfile, logout, checkPage, isShow, setIsShow } = useUserContext();
   const [name, setName] = useState(userProfile?.displayName);
   const [roles, setRoles] = useState(userProfile?.roles);
   const [photoURL, setPhotoURL] = useState(userProfile?.photoURL);
@@ -48,148 +49,160 @@ const ToolSideBar = ({ showSideBar }) => {
       });
   };
 
+  const changeShowMenu = () => {
+    setIsShow(!isShow);
+  }
   return (
-    <div className={`flex flex-col items-center w-[280px] min-w-[280px] h-full bg-[#A04747] text-white text-left text-2xl rounded-[40px] border-0 box-border p-4
+    <>
+      <div className={`flex flex-col items-center w-[280px] min-w-[280px] h-full bg-[#2d3436] text-white text-left text-2xl rounded-[40px] border-0 box-border p-4
         transition duration-300 overflow-auto scroll-bar-none
-        ${showSideBar ? 'translate-x-0' : '-translate-x-full'}`}>
-      <Link
-        to={portalUrl}
-        className="w-full flex flex-col items-center justify-start pb-2 box-border relative gap-2 text-center text-white no-underline"
-      >
-        <img className="w-[77.3px] relative h-[50px] z-[0]" alt="" src={logo} />
-        <div className="text-lg font-bigger">Jade Dragon</div>
-      </Link>
-      {/* MAIN */}
-      <div className="w-full flex flex-col items-center justify-start py-0 box-border">
-        <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] uppercase font-bold">
-          <div className={`w-full text-left font-bigger`}>
-            {checkPage ? 'Trang Admin' : `Đây là trang cá nhân của ${name}`}
+        ${isShow ? 'translate-x-0' : '-translate-x-full'}`}>
+        <Link
+          to={portalUrl}
+          className="w-full flex flex-col items-center justify-start pb-2 box-border relative gap-2 text-center text-white no-underline"
+        >
+          <img className="w-[77.3px] relative h-[50px] z-[0]" alt="" src={logo} />
+          <div className="text-lg font-bigger">Jade Dragon</div>
+        </Link>
+        {/* MAIN */}
+        <div className="w-full flex flex-col items-center justify-start py-0 box-border">
+          <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] uppercase font-bold">
+            <div className={`w-full text-left font-bigger`}>
+              {checkPage ? 'Trang Admin' : `Đây là trang cá nhân của ${name}`}
+            </div>
           </div>
-        </div>
-        <div className="w-full flex flex-col items-center box-border gap-1 pb-2">
-          <div
-            className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/management-user-page'
-              ? 'hover:bg-orange hover:text-gray-900'
-              : ''
-              }`}
-          >
-            <Link
-              to="/management-user-page"
-              className={`w-full text-left py-1 text-sm no-underline
+          <div className="w-full flex flex-col items-center box-border gap-1 pb-2">
+            <div
+              className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/management-user-page'
+                ? 'hover:bg-[#dfe6e9] hover:text-gray-900'
+                : ''
+                }`}
+            >
+              <Link
+                to="/management-user-page"
+                className={`w-full text-left py-1 text-sm no-underline
                   ${location.pathname === '/management-user-page'
-                  ? 'text-orange'
-                  : 'text-white hover:bg-orange hover:text-gray-900'
-                }
+                    ? 'text-orange'
+                    : 'text-white hover:bg-[#dfe6e9] hover:text-gray-900'
+                  }
                 `}
+              >
+                Danh sách người dùng
+              </Link>
+            </div>
+            <div
+              className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/report-site'
+                ? 'hover:bg-[#dfe6e9] hover:text-gray-900'
+                : ''
+                }`}
             >
-              Danh sách người dùng
-            </Link>
-          </div>
-          <div
-            className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/report-site'
-              ? 'hover:bg-orange hover:text-gray-900'
-              : ''
-              }`}
-          >
-            <Link
-              to="/report-site"
-              className={`w-full text-left py-1 text-sm no-underline
+              <Link
+                to="/report-site"
+                className={`w-full text-left py-1 text-sm no-underline
                   ${location.pathname === '/report-site'
-                  ? 'text-orange'
-                  : 'text-white hover:bg-orange hover:text-gray-900'
-                }
+                    ? 'text-orange'
+                    : 'text-white hover:bg-[#dfe6e9] hover:text-gray-900'
+                  }
                 `}
+              >
+                Danh sách ghi chú
+              </Link>
+            </div>
+            <div
+              className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/tool-inventory-summary'
+                ? 'hover:bg-[#dfe6e9] hover:text-gray-900'
+                : ''
+                }`}
             >
-              Danh sách ghi chú
-            </Link>
-          </div>
-          <div
-            className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/tool-inventory-summary'
-              ? 'hover:bg-orange hover:text-gray-900'
-              : ''
-              }`}
-          >
-            <Link
-              to="/tool-inventory-summary"
-              className={`w-full text-left py-1 text-sm no-underline
+              <Link
+                to="/tool-inventory-summary"
+                className={`w-full text-left py-1 text-sm no-underline
                   ${location.pathname === '/tool-inventory-summary'
-                  ? 'text-orange'
-                  : 'text-white hover:bg-orange hover:text-gray-900'
-                }
+                    ? 'text-orange'
+                    : 'text-white hover:bg-[#dfe6e9] hover:text-gray-900'
+                  }
                 `}
+              >
+                Danh sách phê duyệt
+              </Link>
+            </div>
+            <div
+              className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/consumables'
+                ? 'hover:bg-[#dfe6e9] hover:text-gray-900'
+                : ''
+                }`}
             >
-              Danh sách phê duyệt
-            </Link>
-          </div>
-          <div
-            className={`w-full flex justify-center self-stretch relative ${location.pathname !== '/consumables'
-              ? 'hover:bg-orange hover:text-gray-900'
-              : ''
-              }`}
-          >
-            <Link
-              to="/consumables"
-              className={`w-full text-left py-1 text-sm no-underline
+              <Link
+                to="/consumables"
+                className={`w-full text-left py-1 text-sm no-underline
                   ${location.pathname === '/consumables'
-                  ? 'text-orange'
-                  : 'text-white hover:bg-orange hover:text-gray-900'
-                }
+                    ? 'text-orange'
+                    : 'text-white hover:bg-[#dfe6e9] hover:text-gray-900'
+                  }
                 `}
-            >
-              消耗品管理
-            </Link>
+              >
+                消耗品管理
+              </Link>
+            </div>
           </div>
+          <div className="w-full rounded bg-gray-500 h-[0.1rem]" />
         </div>
-        <div className="w-full rounded bg-gray-500 h-[0.1rem]" />
-      </div>
-      {/* TOOL */}
-      {/* <div className="w-full flex flex-col items-center py-0 box-border">
+        {/* TOOL */}
+        {/* <div className="w-full flex flex-col items-center py-0 box-border">
         <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] pt-2 uppercase font-bold">
           <div className="w-full text-left font-bigger">TOOL</div>
         </div>
         
         <div className="w-full rounded bg-gray-500 h-[0.1rem]" />
       </div> */}
-      {/* ACCOUNT */}
-      <div className="w-full flex flex-col items-center justify-start py-0 box-border">
-        <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] pt-2 uppercase font-bold">
-          <div className="w-full text-left font-bigger">ACCOUNT</div>
-        </div>
-        <div className="w-full flex flex-col items-center justify-start pb-2 box-border gap-1 text-sm ">
-          <div className="w-full py-1 h-full hover:bg-orange hover:text-gray-900 flex justify-center self-stretch relative">
-            <Link
-              to=""
-              className="w-full text-left text-sm text-white no-underline"
-              onClick={onLockOut}
-            >
-              Đăng xuất
-            </Link>
+        {/* ACCOUNT */}
+        <div className="w-full flex flex-col items-center justify-start py-0 box-border">
+          <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] pt-2 uppercase font-bold">
+            <div className="w-full text-left font-bigger">ACCOUNT</div>
           </div>
-          {/* <div className="w-full py-1 h-full hover:bg-orange hover:text-gray-900 flex justify-center self-stretch relative">
+          <div className="w-full flex flex-col items-center justify-start pb-2 box-border gap-1 text-sm ">
+            <div className="w-full py-1 h-full hover:bg-[#dfe6e9] text-white hover:text-gray-900 flex justify-center self-stretch relative">
+              <Link
+                to=""
+                className="w-full text-left text-sm no-underline"
+                onClick={onLockOut}
+              >
+                Đăng xuất
+              </Link>
+            </div>
+            {/* <div className="w-full py-1 h-full hover:bg-[#dfe6e9] hover:text-gray-900 flex justify-center self-stretch relative">
             <Link to="" className="w-full text-left text-sm text-white no-underline">
               設定
             </Link>
           </div> */}
-        </div>
-        <div className="w-full rounded bg-gray-500 h-[0.1rem]" />
-      </div>
-      <div className='h-full'></div>
-      <div className="w-full flex flex-col items-center justify-start py-0 box-border">
-        <div className="w-full flex flex-col items-center justify-start mt-2 ipad:mb-24">
-          <img
-            className="w-10 relative h-10 object-cover rounded-full"
-            alt="user-profile"
-            src={photoURL || user}
-          />
-          <div className="self-stretch relative text-sm text-center">
-            {name}
           </div>
-          <div className="self-stretch relative text-gray-400 text-xs text-center">
-            v{version}
+          <div className="w-full rounded bg-gray-500 h-[0.1rem]" />
+        </div>
+        <div className='h-full'></div>
+        <div className="w-full flex flex-col items-center justify-start py-0 box-border">
+          <div className="w-full flex flex-col items-center justify-start mt-2 ipad:mb-24">
+            <img
+              className="w-10 relative h-10 object-cover rounded-full"
+              alt="user-profile"
+              src={photoURL || user}
+            />
+            <div className="self-stretch relative text-sm text-center">
+              {name}
+            </div>
+            <div className="self-stretch relative text-gray-400 text-xs text-center">
+              v{version}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div onClick={changeShowMenu} className={`absolute ${isShow ? 'right-0' : ''} h-[10%] min-h-[10%] flex items-center z-20`}>
+        {isShow ? (
+          <BiSolidChevronLeftCircle id='button1' className='h-[30px] w-[30px]' />
+        ) : (
+          <BiSolidChevronRightCircle id='button2' className='h-[30px] w-[30px]' />
+        )}
+      </div>
+    </>
   );
 };
 

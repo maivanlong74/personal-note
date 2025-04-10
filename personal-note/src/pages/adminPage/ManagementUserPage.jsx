@@ -3,7 +3,7 @@ import CustomerPageRedirection from '../../components/Redirection/CustomerPageRe
 
 export default function ManagementUserPage() {
   return (
-    <div className='p-2'>
+    <div className='border border-black w-full h-full'>
       <CustomerPageRedirection />
     </div>
   );

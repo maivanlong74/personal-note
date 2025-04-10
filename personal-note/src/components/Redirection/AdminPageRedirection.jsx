@@ -11,7 +11,7 @@ const AdminPageRedirection = () => {
   }
 
   return (
-    <div className="">
+    <div className='bg-slate-400 p-8'>
       <h1 className='text-red-900'>Đây là home page</h1>
       <div>
         <button onClick={AdminPage}>Đi đến Admin</button>

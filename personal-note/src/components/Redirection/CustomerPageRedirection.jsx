@@ -11,7 +11,7 @@ const CustomerPageRedirection = () => {
   }
 
   return (
-    <div className=''>
+    <div className='bg-slate-400 p-7'>
       <h1 className='text-red-900'>Đây là managment page</h1>
       <div>
         <button onClick={CustomerPage}>Đi đến Client</button>

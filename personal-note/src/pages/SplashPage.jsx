@@ -11,7 +11,7 @@ import logo from "@assets/images/logo.svg";
 
 export default function SplashPage() {
   const { setErrorMessage } = useAppContext();
-  const {isAuthorized, canManage, setCheckPage} = useUserContext();
+  const {isAuthorized, canManage, setcheckPageAdmin} = useUserContext();
 
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ export default function SplashPage() {
         UserService.canConnect()
         .then(()=> {
           if (isAuthorized) {
-            setCheckPage(canManage);
+            setcheckPageAdmin(canManage);
             if (canManage) {
               navigate('/management-user-page');
             } else {

@@ -4,10 +4,10 @@ import { FaHouseUser } from "react-icons/fa";
 
 const CustomerPageRedirection = () => {
   const navigate = useNavigate();
-  const { setCheckPage } = useUserContext();
+  const { setcheckPageAdmin } = useUserContext();
 
   const CustomerPage = () => {
-    setCheckPage(false);
+    setcheckPageAdmin(false);
     navigate('/home');
   }
 

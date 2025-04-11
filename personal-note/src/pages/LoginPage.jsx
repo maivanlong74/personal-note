@@ -6,7 +6,7 @@ import { LoginButton } from '@components/Button/LoginButton';
 import { ROLE_MANAGEMENT } from '../constants/ClientConstants';
 
 export default function LoginPage() {
-  const { userProfile, setCheckPage } = useUserContext();
+  const { userProfile, setcheckPageAdmin } = useUserContext();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ export default function LoginPage() {
       if (userProfile) {
         const canManage = ROLE_MANAGEMENT.some(role => userProfile?.roles?.includes(role));
 
-        setCheckPage(canManage);
+        setcheckPageAdmin(canManage);
         const { from } = location.state || { from: { pathname: canManage ? "/management-user-page" : "/home" } };
         navigate(from, { replace: true});
       }

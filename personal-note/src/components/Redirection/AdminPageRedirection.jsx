@@ -5,7 +5,7 @@ import { RiAdminFill } from "react-icons/ri";
 
 const AdminPageRedirection = () => {
   const navigate = useNavigate();
-  const { userProfile, setCheckPage } = useUserContext();
+  const { userProfile, setcheckPageAdmin } = useUserContext();
   const [roles, setRoles] = useState(userProfile?.roles);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const AdminPageRedirection = () => {
   }, [userProfile]);
 
   const AdminPage = () => {
-    setCheckPage(true);
+    setcheckPageAdmin(true);
     navigate('/management');
   }
 

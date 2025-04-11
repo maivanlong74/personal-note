@@ -4,21 +4,29 @@ import { getAuth, signOut } from 'firebase/auth';
 
 import '@assets/css/sideBar.scss';
 import { useUserContext } from '@contexts/UserContext';
+import { Modal } from '../Modal/modal';
 import logo from '@assets/images/logo.svg';
 import user from '@assets/images/user@2x.png';
 import { version } from '../../../package.json';
 import { BiSolidChevronRightCircle, BiSolidChevronLeftCircle } from "react-icons/bi";
 
 const ToolSideBar = () => {
-  const { userProfile, logout, checkPage, isShow, setIsShow } = useUserContext();
+  // Khai báo biến chứa dữ liệu
+  const { userProfile, logout, checkPageAdmin, isShow, setIsShow } = useUserContext();
   const [name, setName] = useState(userProfile?.displayName);
   const [roles, setRoles] = useState(userProfile?.roles);
   const [photoURL, setPhotoURL] = useState(userProfile?.photoURL);
   const location = useLocation();
   const navigate = useNavigate();
+  const [dialog, setDialog] = useState({
+    message: "",
+    isLoading: false,
+    name: "",
+  });
 
   const { VITE_PORTAL_URL: portalUrl } = import.meta.env;
 
+  // Kiểm tra quyền và xác nhận thông tin user
   useEffect(() => {
     const ensureAuthorized = () => {
       if (!userProfile) {
@@ -36,6 +44,7 @@ const ToolSideBar = () => {
     ensureAuthorized();
   }, [userProfile]);
 
+  // đăng xuất
   const onLockOut = () => {
     const auth = getAuth();
 
@@ -49,20 +58,22 @@ const ToolSideBar = () => {
       });
   };
 
+  // tắt bật menu
   const changeShowMenu = () => {
     setIsShow(!isShow);
   }
 
-  const tabMenuHtml = (roleType, link, content) => {
+  // Tạo tab menu
+  const tabMenuHtml = (pageAdmin, link, content) => {
     const isActive = location.pathname === link;
   
     return (
-      <div style={roleType === roles ? {} : { display: 'none' }}
+      <div style={checkPageAdmin != pageAdmin ? {display: 'none'} : {}}
         className={`w-full flex justify-center self-stretch relative ${
           !isActive
             ? 'hover:bg-[#a4b0be] hover:border hover:border-indigo-200 hover:border-y-indigo-500'
             : ''
-        } ${checkPage}`}
+        } ${checkPageAdmin}`}
       >
         <Link
           to={link}
@@ -76,6 +87,20 @@ const ToolSideBar = () => {
         </Link>
       </div>
     );
+  };
+
+  // tắt bật modal
+  const handleShowModal = (message, isLoading, title) => {
+    setDialog({ message, isLoading, title });
+  }
+
+  const confirmLogout = (choose) => {
+    if (choose) {
+      onLockOut();
+      handleShowModal("", "");
+    } else {
+      handleShowModal("", "");
+    }
   };
   return (
     <>
@@ -93,19 +118,19 @@ const ToolSideBar = () => {
         <div className="w-full flex flex-col items-center justify-start py-0 box-border">
           <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] uppercase font-bold">
             <div className={`w-full text-left font-bigger overflow-hidden whitespace-nowrap truncate`} title={`${name}`}>
-              {checkPage ? 'Trang Admin' : `Wellcome ${name}`}
+              {checkPageAdmin ? 'Trang Admin' : `Wellcome ${name}`}
             </div>
           </div>
           <div className="w-full flex flex-col items-center box-border gap-1 pb-2">
             {/* admin */}
-            {tabMenuHtml('admin', '/management-user-page', 'Danh sách người dùng')}
-            {tabMenuHtml('admin', '/report-site', 'Danh sách ghi chú')}
-            {tabMenuHtml('admin', '/tool-inventory-summary', 'Danh sách phê duyệt')}
-            {tabMenuHtml('admin', '/consumables', '消耗品管理')}
+            {tabMenuHtml(true, '/management-user-page', 'Danh sách người dùng')}
+            {tabMenuHtml(true, '/report-site', 'Danh sách ghi chú')}
+            {tabMenuHtml(true, '/tool-inventory-summary', 'Danh sách phê duyệt')}
+            {tabMenuHtml(true, '/consumables', '消耗品管理')}
 
             {/* client */}
-            {tabMenuHtml('client', '/home', 'Trang chủ')}
-            {tabMenuHtml('client', '/my-note', 'Ghi chú')}
+            {tabMenuHtml(false, '/home', 'Trang chủ')}
+            {tabMenuHtml(false, '/my-note', 'Ghi chú')}
           </div>
           <div className="w-full rounded bg-gray-500 h-[0.1rem]" />
         </div>
@@ -124,13 +149,13 @@ const ToolSideBar = () => {
           </div>
           <div className="w-full flex flex-col items-center justify-start pb-2 box-border gap-1 text-sm ">
             <div className="w-full py-1 h-full hover:bg-[#a4b0be] text-black hover:border hover:border-indigo-200 hover:border-y-indigo-500 flex justify-center self-stretch relative">
-              <Link
+              <button
                 to=""
                 className="w-full text-left text-sm no-underline"
-                onClick={onLockOut}
+                onClick={() => handleShowModal('Bạn có chắc chắn muốn đăng xuất?', true, 'xác nhận')}
               >
                 Đăng xuất
-              </Link>
+              </button>
             </div>
             {/* <div className="w-full py-1 h-full hover:bg-[#dfe6e9] hover:text-gray-900 flex justify-center self-stretch relative">
             <Link to="" className="w-full text-left text-sm text-black no-underline">
@@ -164,6 +189,13 @@ const ToolSideBar = () => {
           <BiSolidChevronRightCircle id='button2' className='h-[30px] w-[30px]' />
         )}
       </div>
+      {dialog.isLoading && (
+        <Modal
+          name={dialog.name}
+          message={dialog.message}
+          onDialog={confirmLogout}
+        />
+      )}
     </>
   );
 };

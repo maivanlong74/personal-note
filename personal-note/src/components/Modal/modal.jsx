@@ -1,6 +1,6 @@
 import '@assets/css/modal/modal.scss';
 import { IoClose } from "react-icons/io5";
-import InboxCleanUpVector from "@assets/images/inbox-cleanup-amico.svg";
+import LogOut from "@assets/images/logout.jpg";
 
 export const Modal = ({ message, name, onDialog }) => {
 
@@ -15,7 +15,7 @@ export const Modal = ({ message, name, onDialog }) => {
         </div>
         <div className="dialog-body">
           <div className="dialog-img-body">
-            <img src={InboxCleanUpVector} alt="" />
+            <img src={LogOut} alt="" />
           </div>
           <p className="dialog-message" style={{ fontSize: "14px" }}>
             {message}

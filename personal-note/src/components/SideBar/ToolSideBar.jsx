@@ -94,12 +94,13 @@ const ToolSideBar = () => {
     setDialog({ message, isLoading, title });
   }
 
+  // logout
   const confirmLogout = (choose) => {
     if (choose) {
       onLockOut();
-      handleShowModal("", "");
+      handleShowModal("", false);
     } else {
-      handleShowModal("", "");
+      handleShowModal("", false);
     }
   };
   return (

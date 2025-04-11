@@ -24,8 +24,6 @@ const ToolSideBar = () => {
     name: "",
   });
 
-  const { VITE_PORTAL_URL: portalUrl } = import.meta.env;
-
   // Kiểm tra quyền và xác nhận thông tin user
   useEffect(() => {
     const ensureAuthorized = () => {
@@ -44,20 +42,6 @@ const ToolSideBar = () => {
     ensureAuthorized();
   }, [userProfile]);
 
-  // đăng xuất
-  const onLockOut = () => {
-    const auth = getAuth();
-
-    signOut(auth)
-      .then(() => {
-        logout();
-        navigate('/');
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
-  };
-
   // tắt bật menu
   const changeShowMenu = () => {
     setIsShow(!isShow);
@@ -66,22 +50,20 @@ const ToolSideBar = () => {
   // Tạo tab menu
   const tabMenuHtml = (pageAdmin, link, content) => {
     const isActive = location.pathname === link;
-  
+
     return (
-      <div style={checkPageAdmin != pageAdmin ? {display: 'none'} : {}}
-        className={`w-full flex justify-center self-stretch relative ${
-          !isActive
+      <div style={checkPageAdmin != pageAdmin ? { display: 'none' } : {}}
+        className={`w-full flex justify-center self-stretch relative ${!isActive
             ? 'hover:bg-[#a4b0be] hover:border hover:border-indigo-200 hover:border-y-indigo-500'
             : ''
-        } ${checkPageAdmin}`}
+          } ${checkPageAdmin}`}
       >
         <Link
           to={link}
-          className={`w-full text-left py-1 text-sm no-underline ${
-            isActive
+          className={`w-full text-left py-1 text-sm no-underline ${isActive
               ? 'text-[#ff4757]'
               : 'text-black hover:bg-[#a4b0be] hover:border hover:border-y-indigo-500'
-          }`}
+            }`}
         >
           {content}
         </Link>
@@ -97,9 +79,20 @@ const ToolSideBar = () => {
   // logout
   const confirmLogout = (choose) => {
     if (choose) {
-      onLockOut();
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          logout();
+          navigate('/');
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
+
+      // tắt modal
       handleShowModal("", false);
     } else {
+      // tắt modal
       handleShowModal("", false);
     }
   };
@@ -108,13 +101,10 @@ const ToolSideBar = () => {
       <div className={`flex flex-col items-center w-full h-full text-black text-left text-xl rounded-[40px] border-0 box-border p-4
         transition duration-300 overflow-auto scroll-bar-none
         ${isShow ? 'translate-x-0' : '-translate-x-full'}`}>
-        <Link
-          to={portalUrl}
-          className="w-full flex flex-col items-center justify-start pb-2 box-border relative gap-2 text-center text-black no-underline"
-        >
+        <div className="w-full flex flex-col items-center justify-start pb-2 box-border relative gap-2 text-center text-black no-underline">
           <img className="w-[77.3px] relative h-[50px] z-[0]" alt="" src={logo} />
           <div className="text-lg font-bigger">Jade Dragon</div>
-        </Link>
+        </div>
         {/* MAIN */}
         <div className="w-full flex flex-col items-center justify-start py-0 box-border">
           <div className="w-full flex justify-center self-stretch relative tracking-[0.04em] uppercase font-bold">

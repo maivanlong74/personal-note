@@ -4,7 +4,7 @@ import { getAuth, signOut } from 'firebase/auth';
 
 import '@assets/css/sideBar.scss';
 import { useUserContext } from '@contexts/UserContext';
-import { Modal } from '../Modal/modal';
+import { ModalConfirm } from '../Modal/modal-confirm';
 import logo from '@assets/images/logo.svg';
 import user from '@assets/images/user@2x.png';
 import { version } from '../../../package.json';
@@ -21,7 +21,7 @@ const ToolSideBar = () => {
   const [dialog, setDialog] = useState({
     message: "",
     isLoading: false,
-    name: "",
+    title: "",
   });
 
   // Kiểm tra quyền và xác nhận thông tin user
@@ -143,7 +143,7 @@ const ToolSideBar = () => {
               <button
                 to=""
                 className="w-full text-left text-sm no-underline"
-                onClick={() => handleShowModal('Bạn có chắc chắn muốn đăng xuất?', true, 'xác nhận')}
+                onClick={() => handleShowModal('Bạn có chắc chắn muốn đăng xuất?', true, 'Hộp thoại xác nhận')}
               >
                 Đăng xuất
               </button>
@@ -181,8 +181,8 @@ const ToolSideBar = () => {
         )}
       </div>
       {dialog.isLoading && (
-        <Modal
-          name={dialog.name}
+        <ModalConfirm
+          title={dialog.title}
           message={dialog.message}
           onDialog={confirmLogout}
         />

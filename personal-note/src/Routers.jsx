@@ -17,6 +17,7 @@ import ManagementUserPage from '@pages/adminPage/ManagementUserPage';
 
 //Client
 import HomePage from '@pages/clientPage/HomePage';
+import NotePage from './pages/clientPage/NotePage';
 
 export const Routers = () => {
   return (
@@ -34,6 +35,7 @@ export const Routers = () => {
 
             <Route element={<MainPageLayoutClient />}>
               <Route path={'/home'} element={<HomePage />} />
+              <Route path={'/my-note'} element={<NotePage />} />
             </Route>
 
             <Route path={'/error'} element={<ErrorPage />} />

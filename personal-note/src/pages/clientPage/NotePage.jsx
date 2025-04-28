@@ -10,14 +10,23 @@ export default function NotePage() {
     title: "",
   });
 
+  // State để lưu trữ dữ liệu ghi chú
+  const [noteData, setNoteData] = useState({
+    startDate: '',
+    endDate: '',
+    noteSchedule: '',
+  });
+
   // tắt bật modal create
   const handleShowModalCreate = (isLoading, title) => {
     setDialog({isLoading, title });
   }
 
   // logout
-  const SubmitCreate = () => {
-    handleShowModalCreate("", false);
+  const SubmitCreate = (data) => {
+    setNoteData(data);  // Cập nhật state với dữ liệu mới
+    console.log("Ghi chú mới: ", data);  // Bạn có thể xử lý thêm ở đây, ví dụ lưu vào DB
+    handleShowModalCreate(false, '');  // Đóng modal sau khi lưu dữ liệu
   };
   return (
     <>
@@ -41,7 +50,8 @@ export default function NotePage() {
       {dialog.isLoading && (
         <ModalCreateNote
           title={dialog.title}
-          onDialog={SubmitCreate}
+          onDialog={handleShowModalCreate}
+          onSubmit={SubmitCreate}
         />
       )}
     </>

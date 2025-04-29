@@ -8,20 +8,16 @@ import { useState } from 'react';
 function parseSchedule(note) {
   const schedules = [];
 
-  // Xác định ngày đầu tiên
   const dateRegex = /ngày\s(\d{1,2}\/\d{1,2}\/\d{4})/i;
   const match = note.match(dateRegex);
 
-  if (!match) return ["Không tìm thấy ngày hợp lệ trong ghi chú."];
+  if (!match) return [];
 
   const firstDateStr = match[1];
   const [day, month, year] = firstDateStr.split('/').map(Number);
-  const firstDate = new Date(year, month - 1, day);
+  let currentDate = new Date(year, month - 1, day);
 
-  // Tách các phần theo các dấu mốc "ngày" hoặc "ngày mai", "ngày sau"
   const parts = note.split(/(ngày\s\d{1,2}\/\d{1,2}\/\d{4}|ngày mai|ngày sau)/i).filter(p => p.trim() !== '');
-
-  let currentDate = firstDate;
 
   for (let i = 0; i < parts.length; i++) {
     const part = parts[i].toLowerCase();
@@ -33,23 +29,18 @@ function parseSchedule(note) {
           const [d, m, y] = newDateMatch[0].split('/').map(Number);
           currentDate = new Date(y, m - 1, d);
         }
-      } else if (part.includes('mai')) {
-        currentDate.setDate(currentDate.getDate() + 1);
-      } else if (part.includes('sau')) {
+      } else if (part.includes('mai') || part.includes('sau')) {
         currentDate.setDate(currentDate.getDate() + 1);
       }
     } else {
       schedules.push({
-        date: new Date(currentDate),
+        date: new Date(currentDate.getTime()),
         content: part.trim()
       });
     }
   }
 
-  return schedules.map((schedule, index) => {
-    const dateStr = schedule.date.toLocaleDateString('vi-VN');
-    return `Ngày ${dateStr}:\n\t${schedule.content}`;
-  });
+  return schedules; // Trả về dạng chuẩn [{date, content}]
 }
 
 export default function NotePage() {
@@ -57,10 +48,13 @@ export default function NotePage() {
   // State để lưu trữ dữ liệu ghi chú
   const [noteData, setNoteData] = useState({ startDate: '', endDate: '', noteSchedule: '', });
   const [isNextModal, setIsNextModal] = useState(false);
-  const [schedules, setSchedule] = useState({});
+  const [schedules, setSchedule] = useState([]);
 
   // tắt bật modal create
   const handleShowModalCreate = (isLoading, title) => {
+    if(!isLoading){
+      setIsNextModal(false);
+    }
     setDialog({ isLoading, title });
   }
 
@@ -68,17 +62,19 @@ export default function NotePage() {
   const SubmitCreate = (data) => {
     setNoteData(data);
     const scheduleList = parseSchedule(data.noteSchedule);
-    scheduleList.forEach(item => console.log(item));
     if (scheduleList.length > 0) {
-      setSchedule(scheduleList);
-      setIsNextModal(true);
+    setSchedule(scheduleList);
+    setIsNextModal(true);
+    handleShowModalCreate(true, 'Kết quả phân tích lịch trình');
     } else {
-      setIsNextModal(false);
+    setIsNextModal(false);
     }
   };
 
   // compelete create note
   const CompeleteCreate = () => {
+    console.log("Xác nhận lưu:", schedules);
+    setIsNextModal(false);
     handleShowModalCreate(false, '');
   };
   return (
@@ -107,6 +103,7 @@ export default function NotePage() {
           onSubmit={SubmitCreate}
           onCompelete={CompeleteCreate}
           nextModal={isNextModal}
+          schedules={schedules}
         />
       )}
 

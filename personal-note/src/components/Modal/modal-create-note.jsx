@@ -2,7 +2,7 @@ import '@assets/css/modal/modal.scss';
 import { useState } from 'react';
 import { IoClose } from "react-icons/io5";
 
-export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextModal }) => {
+export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextModal, schedules }) => {
   // State để lưu trữ thông tin của các trường nhập liệu
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -25,7 +25,47 @@ export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextMo
 
         <div className="dialog-body">
           {nextModal ? (
-            <h1 className="text-center text-black text-xl font-bold">Đã chuyển bước tiếp theo</h1>
+            <>
+              <h4 className="text-center text-black text-xl font-bold">Vui lòng xác nhận</h4>
+              <div id='confirmSchedule' className='w-full max-h-[40rem] overflow-x-auto'>
+                <ul>
+                  {schedules.map((item, index) => (
+                    <li key={index} className='flex border border-black'>
+                      <input
+                        type="date"
+                        name={`note-a-${index}`}
+                        value={
+                          (() => {
+                            const d = new Date(item.date);
+                            return isNaN(d.getTime()) ? '' : d.toISOString().split('T')[0];
+                          })()
+                        }
+                        className='w-[30%] border-r border-black'
+                        onChange={(e) => {
+                          const updated = [...schedules];
+                          updated[index].date = new Date(e.target.value);
+                          onSubmit({ ...updated }); // hoặc set lại state nếu có logic riêng
+                        }}
+                      />
+                      <div className='w-[70%] p-2 content-note'>
+                        <p
+                          className='w-full p-1 border border-gray-100 cursor-pointer'
+                          contentEditable
+                          suppressContentEditableWarning
+                          onBlur={(e) => {
+                            const updated = [...schedules];
+                            updated[index].content = e.target.innerText;
+                            onSubmit({ ...updated }); // cập nhật nếu cần
+                          }}
+                        >
+                          {item.content}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
           ) : (
             <>
               <ul className='text-black flex space-x-2 justify-center'>

@@ -4,29 +4,82 @@ import { TableComponent } from '../../components/Table/tableComponent';
 import { ModalCreateNote } from '../../components/Modal/modal-create-note';
 import { useState } from 'react';
 
-export default function NotePage() {
-  const [dialog, setDialog] = useState({
-    isLoading: false,
-    title: "",
-  });
+// Hàm phân tích noteSchedule thành lịch trình
+function parseSchedule(note) {
+  const schedules = [];
 
-  // State để lưu trữ dữ liệu ghi chú
-  const [noteData, setNoteData] = useState({
-    startDate: '',
-    endDate: '',
-    noteSchedule: '',
+  // Xác định ngày đầu tiên
+  const dateRegex = /ngày\s(\d{1,2}\/\d{1,2}\/\d{4})/i;
+  const match = note.match(dateRegex);
+
+  if (!match) return ["Không tìm thấy ngày hợp lệ trong ghi chú."];
+
+  const firstDateStr = match[1];
+  const [day, month, year] = firstDateStr.split('/').map(Number);
+  const firstDate = new Date(year, month - 1, day);
+
+  // Tách các phần theo các dấu mốc "ngày" hoặc "ngày mai", "ngày sau"
+  const parts = note.split(/(ngày\s\d{1,2}\/\d{1,2}\/\d{4}|ngày mai|ngày sau)/i).filter(p => p.trim() !== '');
+
+  let currentDate = firstDate;
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i].toLowerCase();
+
+    if (part.startsWith('ngày ')) {
+      if (part.includes('/')) {
+        const newDateMatch = part.match(/\d{1,2}\/\d{1,2}\/\d{4}/);
+        if (newDateMatch) {
+          const [d, m, y] = newDateMatch[0].split('/').map(Number);
+          currentDate = new Date(y, m - 1, d);
+        }
+      } else if (part.includes('mai')) {
+        currentDate.setDate(currentDate.getDate() + 1);
+      } else if (part.includes('sau')) {
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    } else {
+      schedules.push({
+        date: new Date(currentDate),
+        content: part.trim()
+      });
+    }
+  }
+
+  return schedules.map((schedule, index) => {
+    const dateStr = schedule.date.toLocaleDateString('vi-VN');
+    return `Ngày ${dateStr}:\n\t${schedule.content}`;
   });
+}
+
+export default function NotePage() {
+  const [dialog, setDialog] = useState({ isLoading: false, title: "", });
+  // State để lưu trữ dữ liệu ghi chú
+  const [noteData, setNoteData] = useState({ startDate: '', endDate: '', noteSchedule: '', });
+  const [isNextModal, setIsNextModal] = useState(false);
+  const [schedules, setSchedule] = useState({});
 
   // tắt bật modal create
   const handleShowModalCreate = (isLoading, title) => {
-    setDialog({isLoading, title });
+    setDialog({ isLoading, title });
   }
 
-  // logout
+  // create note
   const SubmitCreate = (data) => {
-    setNoteData(data);  // Cập nhật state với dữ liệu mới
-    console.log("Ghi chú mới: ", data);  // Bạn có thể xử lý thêm ở đây, ví dụ lưu vào DB
-    handleShowModalCreate(false, '');  // Đóng modal sau khi lưu dữ liệu
+    setNoteData(data);
+    const scheduleList = parseSchedule(data.noteSchedule);
+    scheduleList.forEach(item => console.log(item));
+    if (scheduleList.length > 0) {
+      setSchedule(scheduleList);
+      setIsNextModal(true);
+    } else {
+      setIsNextModal(false);
+    }
+  };
+
+  // compelete create note
+  const CompeleteCreate = () => {
+    handleShowModalCreate(false, '');
   };
   return (
     <>
@@ -52,8 +105,11 @@ export default function NotePage() {
           title={dialog.title}
           onDialog={handleShowModalCreate}
           onSubmit={SubmitCreate}
+          onCompelete={CompeleteCreate}
+          nextModal={isNextModal}
         />
       )}
+
     </>
   );
 }

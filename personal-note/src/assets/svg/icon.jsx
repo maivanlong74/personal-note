@@ -397,4 +397,19 @@ export const Delete = ({ className }) => {
   );
 };
 
+export const Edit = ({ className }) => {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      stroke="currentColor"
+      className={className}
+      color="white"
+    >
+      <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="#000000"/>
+    </svg>
+  );
+};
 

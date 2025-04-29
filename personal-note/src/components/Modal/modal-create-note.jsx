@@ -37,14 +37,17 @@ export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextMo
                         value={
                           (() => {
                             const d = new Date(item.date);
-                            return isNaN(d.getTime()) ? '' : d.toISOString().split('T')[0];
+                            if (isNaN(d.getTime())) return '';
+                            // format yyyy-mm-dd theo local timezone
+                            const pad = (n) => String(n).padStart(2, '0');
+                            return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
                           })()
                         }
-                        className='w-[30%] border-r border-black'
+                        className="w-[30%] border-r border-black"
                         onChange={(e) => {
                           const updated = [...schedules];
-                          updated[index].date = new Date(e.target.value);
-                          onSubmit({ ...updated }); // hoặc set lại state nếu có logic riêng
+                          updated[index].date = new Date(e.target.value); // e.target.value là "yyyy-mm-dd"
+                          onSubmit({ ...updated }); // hoặc set lại state nếu cần
                         }}
                       />
                       <div className='w-[70%] p-2 content-note'>
@@ -68,17 +71,6 @@ export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextMo
             </>
           ) : (
             <>
-              <ul className='text-black flex space-x-2 justify-center'>
-                <li className='border border-black p-2 w-[40%] text-left'>
-                  <label className='text-black font-bold'>Bắt đầu</label> <br />
-                  <input type="date" name='startDate' onChange={(e) => setStartDate(e.target.value)} />
-                </li>
-                <li className='border border-black p-2 w-[40%] text-left'>
-                  <label className='text-black font-bold'>Kết thúc</label> <br />
-                  <input type="date" name='endDate' onChange={(e) => setEndDate(e.target.value)} />
-                </li>
-              </ul>
-              <br />
               <div className='w-full h-60 text-center'>
                 <textarea
                   name="noteSchedule"

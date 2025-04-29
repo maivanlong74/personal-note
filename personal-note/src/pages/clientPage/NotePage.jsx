@@ -1,58 +1,23 @@
-import { Link } from 'react-router-dom';
 import AdminPageRedirection from '../../components/Redirection/AdminPageRedirection';
-import { TableComponent } from '../../components/Table/tableComponent';
+import { TableScheduleComponent } from '../../components/Table/tableScheduleComponent';
 import { ModalCreateNote } from '../../components/Modal/modal-create-note';
 import { useState } from 'react';
-
-// Hàm phân tích noteSchedule thành lịch trình
-function parseSchedule(note) {
-  const schedules = [];
-
-  const dateRegex = /ngày\s(\d{1,2}\/\d{1,2}\/\d{4})/i;
-  const match = note.match(dateRegex);
-
-  if (!match) return [];
-
-  const firstDateStr = match[1];
-  const [day, month, year] = firstDateStr.split('/').map(Number);
-  let currentDate = new Date(year, month - 1, day);
-
-  const parts = note.split(/(ngày\s\d{1,2}\/\d{1,2}\/\d{4}|ngày mai|ngày sau)/i).filter(p => p.trim() !== '');
-
-  for (let i = 0; i < parts.length; i++) {
-    const part = parts[i].toLowerCase();
-
-    if (part.startsWith('ngày ')) {
-      if (part.includes('/')) {
-        const newDateMatch = part.match(/\d{1,2}\/\d{1,2}\/\d{4}/);
-        if (newDateMatch) {
-          const [d, m, y] = newDateMatch[0].split('/').map(Number);
-          currentDate = new Date(y, m - 1, d);
-        }
-      } else if (part.includes('mai') || part.includes('sau')) {
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-    } else {
-      schedules.push({
-        date: new Date(currentDate.getTime()),
-        content: part.trim()
-      });
-    }
-  }
-
-  return schedules; // Trả về dạng chuẩn [{date, content}]
-}
+import parseSchedule from '../../components/CreateSchedule';
+import { useUserContext } from '../../contexts/UserContext';
+import { ScheduleService } from '../../services/ScheduleService';
 
 export default function NotePage() {
+  const { userProfile } = useUserContext();
   const [dialog, setDialog] = useState({ isLoading: false, title: "", });
   // State để lưu trữ dữ liệu ghi chú
-  const [noteData, setNoteData] = useState({ startDate: '', endDate: '', noteSchedule: '', });
   const [isNextModal, setIsNextModal] = useState(false);
   const [schedules, setSchedule] = useState([]);
+  const [isChange, setIsChange] = useState(false);
 
   // tắt bật modal create
   const handleShowModalCreate = (isLoading, title) => {
-    if(!isLoading){
+    if (!isLoading) {
+      setSchedule([]);
       setIsNextModal(false);
     }
     setDialog({ isLoading, title });
@@ -60,21 +25,27 @@ export default function NotePage() {
 
   // create note
   const SubmitCreate = (data) => {
-    setNoteData(data);
-    const scheduleList = parseSchedule(data.noteSchedule);
+    const scheduleList = parseSchedule(data.noteSchedule) || [];
     if (scheduleList.length > 0) {
-    setSchedule(scheduleList);
-    setIsNextModal(true);
-    handleShowModalCreate(true, 'Kết quả phân tích lịch trình');
+      setSchedule(prev => [...prev, ...scheduleList]);
+      setIsNextModal(true);
+      handleShowModalCreate(true, 'Kết quả phân tích lịch trình');
     } else {
-    setIsNextModal(false);
+      alert("Không thể phân tích lịch trình");
+      setIsNextModal(false);
     }
   };
 
   // compelete create note
-  const CompeleteCreate = () => {
-    console.log("Xác nhận lưu:", schedules);
+  const CompleteCreate = async () => {
+    const saveSchedule = {
+      UserId: userProfile.id,
+      schedules: schedules
+    }
+    await ScheduleService.saveSchedule(saveSchedule);
+    setIsChange(!isChange)
     setIsNextModal(false);
+    setSchedule([]);
     handleShowModalCreate(false, '');
   };
   return (
@@ -92,7 +63,7 @@ export default function NotePage() {
         </div>
         <div className='flex-1 w-full relative'>
           <div className='w-full h-full absolute'>
-            <TableComponent />
+            <TableScheduleComponent UserId={userProfile.id} IsChange={isChange}/>
           </div>
         </div>
       </div>
@@ -101,7 +72,7 @@ export default function NotePage() {
           title={dialog.title}
           onDialog={handleShowModalCreate}
           onSubmit={SubmitCreate}
-          onCompelete={CompeleteCreate}
+          onCompelete={CompleteCreate}
           nextModal={isNextModal}
           schedules={schedules}
         />

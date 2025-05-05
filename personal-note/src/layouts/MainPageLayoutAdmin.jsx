@@ -3,13 +3,18 @@ import { Outlet, useLocation, Navigate } from 'react-router-dom';
 import { PersonalNoteProvider } from '@contexts/PersonalNoteContext';
 import { useUserContext } from '../contexts/UserContext';
 import ToolSideBar from '@components/SideBar/ToolSideBar';
+import { useEffect } from 'react';
 
 export const MainPageLayoutAdmin = () => {
   const {
     canManage, isAuthorized,
-    isShow, setIsShow,
+    isShow, setIsPageAdmin
   } = useUserContext();
   const location = useLocation();
+
+  useEffect(() => {
+    setIsPageAdmin(true);
+  }, );
 
   if (!isAuthorized) {
     return <Navigate to="/login" state={{ from: location }} />;

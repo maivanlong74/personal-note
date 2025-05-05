@@ -12,7 +12,7 @@ import { BiSolidChevronRightCircle, BiSolidChevronLeftCircle } from "react-icons
 
 const ToolSideBar = () => {
   // Khai báo biến chứa dữ liệu
-  const { userProfile, logout, checkPageAdmin, isShow, setIsShow } = useUserContext();
+  const { userProfile, logout, checkPageAdmin, isShow, setIsShow, isPageAdmin } = useUserContext();
   const [name, setName] = useState(userProfile?.displayName);
   const [roles, setRoles] = useState(userProfile?.roles);
   const [photoURL, setPhotoURL] = useState(userProfile?.photoURL);
@@ -52,11 +52,11 @@ const ToolSideBar = () => {
     const isActive = location.pathname === link;
 
     return (
-      <div style={checkPageAdmin != pageAdmin ? { display: 'none' } : {}}
+      <div style={isPageAdmin != pageAdmin ? { display: 'none' } : {}}
         className={`w-full flex justify-center self-stretch relative ${!isActive
             ? 'hover:bg-[#a4b0be] hover:border hover:border-indigo-200 hover:border-y-indigo-500'
             : ''
-          } ${checkPageAdmin}`}
+          } ${isPageAdmin}`}
       >
         <Link
           to={link}

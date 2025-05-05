@@ -14,6 +14,7 @@ export const UserContextProvider = ({children}) => {
   const [canManage, setCanManage] = useState(false);
   const [isShow, setIsShow] = useState(true);
   const [checkPageAdmin, setcheckPageAdmin] = useState(false);
+  const [isPageAdmin, setIsPageAdmin] = useState();
 
   const logout = () => {
     const auth = getAuth();
@@ -60,7 +61,8 @@ export const UserContextProvider = ({children}) => {
     userProfile, ensureAuthorized, isAuthorized, logout, 
     canManage, setCanManage, 
     isShow, setIsShow,
-    checkPageAdmin, setcheckPageAdmin
+    checkPageAdmin, setcheckPageAdmin,
+    isPageAdmin, setIsPageAdmin
   }}>{children}
         </UserContext.Provider>
 }

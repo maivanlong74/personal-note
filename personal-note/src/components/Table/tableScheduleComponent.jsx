@@ -6,6 +6,8 @@ import { ScheduleService } from '../../services/ScheduleService';
 export const TableScheduleComponent = ({ UserId, IsChange }) => {
   const [dialog, setDialog] = useState({ message: "", isLoading: false, title: "", });
   const [schedules, setSchedules] = useState([]);
+  const [editing, setEditing] = useState(null); // { parentId, scheduleId }
+  const [editData, setEditData] = useState({ date: "", note: "" });
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -33,6 +35,49 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
   const handleShowModal = (message, isLoading, title, scheduleId, scheduleParentId) => {
     setDialog({ message, isLoading, title, scheduleId, scheduleParentId });
   };
+
+  const handleEdit = (schedule, parentId) => {
+    setEditing({ parentId, scheduleId: schedule.id });
+    setEditData({
+      date: schedule.dateSchedule.toDate().toISOString().substring(0, 10),
+      note: Array.isArray(schedule.noteSchedule) ? schedule.noteSchedule.join('\n') : schedule.noteSchedule
+    });
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const docRef = await ScheduleService.getSchedulesById(UserId);
+      const targetDoc = docRef.find(d => d.idSchedule === editing.parentId);
+      const updatedSchedules = targetDoc.schedules.map(s => {
+        if (s.id === editing.scheduleId) {
+          return {
+            ...s,
+            dateSchedule: new Date(editData.date),
+            noteSchedule: editData.note
+              .split('\n')
+              .map(line => line.trim())
+              .filter(line => line !== "")
+          };
+        }
+        return s;
+      });
+
+      await ScheduleService.updateSchedule(editing.parentId, updatedSchedules);
+      const refreshed = await ScheduleService.getSchedulesById(UserId);
+      setSchedules(refreshed);
+    } catch (error) {
+      console.error("Lỗi cập nhật:", error);
+    } finally {
+      setEditing(null);
+      setEditData({ date: "", note: "" });
+    }
+  };
+
+  const handleCancel = () => {
+    setEditing(null);
+    setEditData({ date: "", note: "" });
+  };
+
   return (
     <div className="overflow-x-auto h-full">
       <table className="table-auto w-full">
@@ -50,19 +95,45 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
             item.schedules.map((schedule, idx) => (
               <tr key={`${index}-${idx}`} className="border border-black">
                 <td className="border border-black text-center">{idx + 1}</td>
-                <td className="border border-black cursor-pointer p-2">
-                  {schedule.dateSchedule.toDate().toLocaleDateString("vi-VN")}
-                </td>
-                <td className="border border-black p-2 whitespace-pre-line">
-                  {Array.isArray(schedule.noteSchedule)
-                    ? schedule.noteSchedule.join('\n')
-                    : schedule.noteSchedule}
-                </td>
-                <td className="border border-black text-center">
-                  <button>
-                    <Edit />
-                  </button>
-                </td>
+                {editing?.scheduleId === schedule.id && editing?.parentId === item.idSchedule ? (
+                  <>
+                    <td className="border border-black p-2">
+                      <input
+                        type="date"
+                        className="w-full bg-[#c7ecee]"
+                        value={editData.date}
+                        onChange={(e) => setEditData({ ...editData, date: e.target.value })}
+                      />
+                    </td>
+                    <td className="border border-black p-2">
+                      <textarea
+                        className="w-full bg-[#c7ecee]"
+                        value={editData.note}
+                        onChange={(e) => setEditData({ ...editData, note: e.target.value })}
+                      />
+                    </td>
+                    <td className="border border-black text-center">
+                      <button onClick={handleUpdate} className="text-green-600 font-bold">OK</button>
+                      <button onClick={handleCancel} className="text-red-600 font-bold">Cancel</button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="border border-black p-2">
+                      {schedule.dateSchedule.toDate().toLocaleDateString("vi-VN")}
+                    </td>
+                    <td className="border border-black p-2 whitespace-pre-line">
+                      {Array.isArray(schedule.noteSchedule)
+                        ? schedule.noteSchedule.join('\n')
+                        : schedule.noteSchedule}
+                    </td>
+                    <td className="border border-black text-center">
+                      <button onClick={() => handleEdit(schedule, item.idSchedule)}>
+                        <Edit />
+                      </button>
+                    </td>
+                  </>
+                )}
                 <td className="border border-black text-center bg-slate-600">
                   <button
                     onClick={() =>

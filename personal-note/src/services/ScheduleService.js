@@ -42,9 +42,15 @@ const ScheduleService = {
           }
         });
 
+        const sortedSchedules = updatedSchedules.sort((a, b) => {
+          const dateA = a.dateSchedule.toDate?.() || new Date(a.dateSchedule);
+          const dateB = b.dateSchedule.toDate?.() || new Date(b.dateSchedule);
+          return dateA - dateB;
+        });
+
         await setDoc(docRef, {
           ...docData,
-          schedules: updatedSchedules
+          schedules: sortedSchedules
         });
 
         console.log('Cập nhật dữ liệu thành công cho UserId:', data.UserId);
@@ -75,7 +81,16 @@ const ScheduleService = {
       const cmd = query(schedulesRef, where('UserId', '==', id));
       const schedules = await getDocs(cmd);
 
-      return schedules.docs.map(doc => doc.data());
+      return schedules.docs.map(doc => {
+        const data = doc.data();
+        data.schedules.sort((a, b) => {
+          const dateA = a.dateSchedule.toDate?.() || new Date(a.dateSchedule);
+          const dateB = b.dateSchedule.toDate?.() || new Date(b.dateSchedule);
+          return dateA - dateB;
+        });
+        return data;
+      });
+      
     } catch (error) {
       console.error('Error Queue data:', error);
       throw error;
@@ -99,6 +114,24 @@ const ScheduleService = {
       console.log(`Đã xóa thành công schedule con có id: ${scheduleItemId}`);
     } catch (error) {
       console.error("Lỗi khi xóa schedule:", error);
+      throw error;
+    }
+  },
+
+  updateSchedule: async (scheduleParentId, updatedSchedules) => {
+    try {
+      const docRef = doc(db, 'Schedules', scheduleParentId);
+
+      const sortedSchedules = updatedSchedules.sort((a, b) => {
+        const dateA = a.dateSchedule.toDate?.() || new Date(a.dateSchedule);
+        const dateB = b.dateSchedule.toDate?.() || new Date(b.dateSchedule);
+        return dateA - dateB;
+      });
+
+      await updateDoc(docRef, { schedules: updatedSchedules });
+      console.log("Đã cập nhật schedule thành công.");
+    } catch (error) {
+      console.error("Lỗi khi cập nhật schedule:", error);
       throw error;
     }
   },

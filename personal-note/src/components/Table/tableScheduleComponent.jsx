@@ -52,18 +52,31 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
       const docRef = await ScheduleService.getSchedulesById(UserId);
       const targetDoc = docRef.find(d => d.idSchedule === editing.parentId);
 
-      const updatedSchedules = targetDoc.schedules.map(s => {
-        if (s.id === editing.scheduleId) {
-          return {
-            ...s,
-            dateSchedule: new Date(editData.date),
-            noteSchedule: editData.note
-              .map(line => line.trim())
-              .filter(line => line !== "")
-          };
-        }
-        return s;
-      });
+      // Ghi chú đã được lọc trắng + rỗng
+      const cleanedNotes = editData.note
+        .map(line => line.trim())
+        .filter(line => line !== "");
+
+      let updatedSchedules;
+
+      if (cleanedNotes.length === 0) {
+        // Nếu không còn ghi chú → xóa record có id tương ứng
+        updatedSchedules = targetDoc.schedules.filter(
+          s => s.id !== editing.scheduleId
+        );
+      } else {
+        // Cập nhật ghi chú bình thường
+        updatedSchedules = targetDoc.schedules.map(s => {
+          if (s.id === editing.scheduleId) {
+            return {
+              ...s,
+              dateSchedule: new Date(editData.date),
+              noteSchedule: cleanedNotes
+            };
+          }
+          return s;
+        });
+      }
 
       await ScheduleService.updateSchedule(editing.parentId, updatedSchedules);
       const refreshed = await ScheduleService.getSchedulesById(UserId);
@@ -74,11 +87,6 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
       setEditing(null);
       setEditData({ date: "", note: [] });
     }
-  };
-
-  const handleCancel = () => {
-    setEditing(null);
-    setEditData({ date: "", note: [] });
   };
 
   return (

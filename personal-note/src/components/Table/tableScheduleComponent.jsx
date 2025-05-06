@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Delete, Edit } from "../../assets/svg/icon";
 import { ModalConfirm } from '../Modal/modal-confirm';
+import { ModalEditSchedule } from '../Modal/modal-edit-schedule';
 import { ScheduleService } from '../../services/ScheduleService';
 
 export const TableScheduleComponent = ({ UserId, IsChange }) => {
   const [dialog, setDialog] = useState({ message: "", isLoading: false, title: "", });
   const [schedules, setSchedules] = useState([]);
   const [editing, setEditing] = useState(null); // { parentId, scheduleId }
-  const [editData, setEditData] = useState({ date: "", note: "" });
+  const [editData, setEditData] = useState({ date: "", note: [] });
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -40,7 +41,9 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
     setEditing({ parentId, scheduleId: schedule.id });
     setEditData({
       date: schedule.dateSchedule.toDate().toISOString().substring(0, 10),
-      note: Array.isArray(schedule.noteSchedule) ? schedule.noteSchedule.join('\n') : schedule.noteSchedule
+      note: Array.isArray(schedule.noteSchedule)
+        ? schedule.noteSchedule
+        : [schedule.noteSchedule]
     });
   };
 
@@ -48,13 +51,13 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
     try {
       const docRef = await ScheduleService.getSchedulesById(UserId);
       const targetDoc = docRef.find(d => d.idSchedule === editing.parentId);
+
       const updatedSchedules = targetDoc.schedules.map(s => {
         if (s.id === editing.scheduleId) {
           return {
             ...s,
             dateSchedule: new Date(editData.date),
             noteSchedule: editData.note
-              .split('\n')
               .map(line => line.trim())
               .filter(line => line !== "")
           };
@@ -69,13 +72,13 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
       console.error("Lỗi cập nhật:", error);
     } finally {
       setEditing(null);
-      setEditData({ date: "", note: "" });
+      setEditData({ date: "", note: [] });
     }
   };
 
   const handleCancel = () => {
     setEditing(null);
-    setEditData({ date: "", note: "" });
+    setEditData({ date: "", note: [] });
   };
 
   return (
@@ -95,45 +98,19 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
             item.schedules.map((schedule, idx) => (
               <tr key={`${index}-${idx}`} className="border border-black">
                 <td className="border border-black text-center">{idx + 1}</td>
-                {editing?.scheduleId === schedule.id && editing?.parentId === item.idSchedule ? (
-                  <>
-                    <td className="border border-black p-2">
-                      <input
-                        type="date"
-                        className="w-full bg-[#c7ecee]"
-                        value={editData.date}
-                        onChange={(e) => setEditData({ ...editData, date: e.target.value })}
-                      />
-                    </td>
-                    <td className="border border-black p-2">
-                      <textarea
-                        className="w-full bg-[#c7ecee]"
-                        value={editData.note}
-                        onChange={(e) => setEditData({ ...editData, note: e.target.value })}
-                      />
-                    </td>
-                    <td className="border border-black text-center">
-                      <button onClick={handleUpdate} className="text-green-600 font-bold">OK</button>
-                      <button onClick={handleCancel} className="text-red-600 font-bold">Cancel</button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td className="border border-black p-2">
-                      {schedule.dateSchedule.toDate().toLocaleDateString("vi-VN")}
-                    </td>
-                    <td className="border border-black p-2 whitespace-pre-line">
-                      {Array.isArray(schedule.noteSchedule)
-                        ? schedule.noteSchedule.join('\n')
-                        : schedule.noteSchedule}
-                    </td>
-                    <td className="border border-black text-center">
-                      <button onClick={() => handleEdit(schedule, item.idSchedule)}>
-                        <Edit />
-                      </button>
-                    </td>
-                  </>
-                )}
+                <td className="border border-black p-2">
+                  {schedule.dateSchedule.toDate().toLocaleDateString("vi-VN")}
+                </td>
+                <td className="border border-black p-2 whitespace-pre-line">
+                  {Array.isArray(schedule.noteSchedule)
+                    ? schedule.noteSchedule.join('\n')
+                    : schedule.noteSchedule}
+                </td>
+                <td className="border border-black text-center">
+                  <button onClick={() => handleEdit(schedule, item.idSchedule)}>
+                    <Edit />
+                  </button>
+                </td>
                 <td className="border border-black text-center bg-slate-600">
                   <button
                     onClick={() =>
@@ -164,6 +141,21 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
               confirmDelete();
             } else {
               setDialog({ message: "", isLoading: false, title: "", scheduleId: null, scheduleParentId: null });
+            }
+          }}
+        />
+      )}
+
+      {editing && (
+        <ModalEditSchedule
+          title="Chỉnh sửa ghi chú"
+          editData={editData}
+          setEditData={setEditData}
+          onDialog={(isConfirm) => {
+            if (isConfirm) {
+              handleUpdate();
+            } else {
+              handleCancel();
             }
           }}
         />

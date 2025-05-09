@@ -1,5 +1,5 @@
 import '@assets/css/modal/modal.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoClose } from "react-icons/io5";
 
 export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextModal, schedules }) => {
@@ -7,6 +7,11 @@ export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextMo
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [noteSchedule, setNoteSchedule] = useState('');
+  const [localSchedules, setLocalSchedules] = useState(schedules || []);
+
+  useEffect(() => {
+    setLocalSchedules(schedules || []);
+  }, [schedules]);
 
   // Hàm xử lý khi nhấn OK hoặc Next
   const handleSubmit = () => {
@@ -29,7 +34,7 @@ export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextMo
               <h4 className="text-center text-black text-xl font-bold">Vui lòng xác nhận</h4>
               <div id='confirmSchedule' className='w-full max-h-[40rem] overflow-x-auto'>
                 <ul>
-                  {schedules.map((item, index) => (
+                  {localSchedules.map((item, index) => (
                     <li key={index} className='flex border border-black'>
                       <input
                         type="date"
@@ -38,16 +43,15 @@ export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextMo
                           (() => {
                             const d = new Date(item.date);
                             if (isNaN(d.getTime())) return '';
-                            // format yyyy-mm-dd theo local timezone
                             const pad = (n) => String(n).padStart(2, '0');
                             return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
                           })()
                         }
                         className="w-[30%] border-r border-black"
                         onChange={(e) => {
-                          const updated = [...schedules];
-                          updated[index].date = new Date(e.target.value); // e.target.value là "yyyy-mm-dd"
-                          onSubmit({ ...updated }); // hoặc set lại state nếu cần
+                          const updated = [...localSchedules];
+                          updated[index].date = new Date(e.target.value);
+                          setLocalSchedules(updated);
                         }}
                       />
                       <div className='w-[70%] p-2 content-note'>
@@ -56,9 +60,9 @@ export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextMo
                           contentEditable
                           suppressContentEditableWarning
                           onBlur={(e) => {
-                            const updated = [...schedules];
+                            const updated = [...localSchedules];
                             updated[index].content = e.target.innerText;
-                            onSubmit({ ...updated }); // cập nhật nếu cần
+                            setLocalSchedules(updated);
                           }}
                         >
                           {item.content}
@@ -89,7 +93,7 @@ export const ModalCreateNote = ({ title, onDialog, onSubmit, onCompelete, nextMo
           {nextModal ? (
             <button
               className="btn-dialog btn-dialog-delete"
-              onClick={onCompelete} // Nếu đang ở bước tiếp theo, click "OK" hoàn tất
+              onClick={() => onCompelete(localSchedules)} // gửi localSchedules ra ngoài
             >
               OK
             </button>

@@ -1,7 +1,6 @@
 import { PersonalNoteStatus } from '@constants/status';
 
 const Loading = ({ PersonalNoteStatus }) => {
-
   const renderPersonalNoteStatus = (status) => {
     switch (status) {
       case PersonalNoteStatus.IDLE: return 'Please choose a tool';
@@ -10,7 +9,6 @@ const Loading = ({ PersonalNoteStatus }) => {
       case PersonalNoteStatus.ERROR: return 'An error occurred. Please try again later';
     }
   }
-
   return (
     <>
       {

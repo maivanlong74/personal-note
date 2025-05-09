@@ -157,3 +157,27 @@
     transform: translateY(0);
   }
 }
+
+.note-container {
+  position: relative;
+  margin-bottom: 1rem;
+
+  textarea {
+    width: 100%;
+    background-color: #c7ecee;
+    height: 6rem;
+    padding-right: 2.5rem; /* Để tránh đè chữ dưới nút */
+  }
+
+  .btn-delete-note {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .btn-delete-icon{
+    color: black;
+  }
+}

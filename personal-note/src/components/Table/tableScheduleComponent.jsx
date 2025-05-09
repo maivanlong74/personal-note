@@ -89,6 +89,11 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
     }
   };
 
+  const handleCancel = () => {
+    setEditing(null);
+    setEditData({ date: "", note: [] });
+  };
+
   return (
     <div className="overflow-x-auto h-full">
       <table className="table-auto w-full">

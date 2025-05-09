@@ -9,7 +9,7 @@ export const usePersonalNoteContext = () => useContext(PersonalNoteContext);
 // eslint-disable-next-line react/prop-types
 export const PersonalNoteProvider = ({children}) => {
   const { userProfile } = useUserContext();
-
+  
   const [currentUser, setCurrentUser] = useState(null)
   const [personalNoteStatus, setPersonalNoteStatus] = useState(PersonalNoteStatus.IDLE)
   const [reload, setReload] = useState(null);
@@ -32,7 +32,7 @@ export const PersonalNoteProvider = ({children}) => {
   }, [userProfile]);
 
   return <PersonalNoteContext.Provider value={initValues}>
-          {PersonalNoteStatus === PersonalNoteStatus.LOADING && <Loading PersonalNoteStatus={PersonalNoteStatus} />}
+          {personalNoteStatus === PersonalNoteStatus.LOADING && <Loading PersonalNoteStatus={personalNoteStatus} />}
           {children}
         </PersonalNoteContext.Provider>
 }

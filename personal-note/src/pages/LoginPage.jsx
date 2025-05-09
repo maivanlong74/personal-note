@@ -10,8 +10,6 @@ export default function LoginPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  
-
   useEffect(() => {
     const ensureAuthorized = () => {
       if (userProfile) {

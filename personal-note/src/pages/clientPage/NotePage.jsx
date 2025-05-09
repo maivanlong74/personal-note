@@ -5,9 +5,12 @@ import { useState } from 'react';
 import parseSchedule from '../../components/CreateSchedule';
 import { useUserContext } from '../../contexts/UserContext';
 import { ScheduleService } from '../../services/ScheduleService';
+import { usePersonalNoteContext } from '../../contexts/PersonalNoteContext';
+import { PersonalNoteStatus } from '../../constants/status';
 
 export default function NotePage() {
   const { userProfile } = useUserContext();
+  const { setPersonalNoteStatus } = usePersonalNoteContext();
   const [dialog, setDialog] = useState({ isLoading: false, title: "", });
   // State để lưu trữ dữ liệu ghi chú
   const [isNextModal, setIsNextModal] = useState(false);
@@ -38,15 +41,26 @@ export default function NotePage() {
 
   // compelete create note
   const CompleteCreate = async () => {
-    const saveSchedule = {
-      UserId: userProfile.id,
-      schedules: schedules
+    try {
+      setPersonalNoteStatus(PersonalNoteStatus.LOADING); // Bắt đầu loading
+  
+      const saveSchedule = {
+        UserId: userProfile.id,
+        schedules: schedules
+      }
+  
+      await ScheduleService.saveSchedule(saveSchedule);
+  
+      setIsChange(!isChange);
+      setIsNextModal(false);
+      setSchedule([]);
+      handleShowModalCreate(false, '');
+  
+      setPersonalNoteStatus(PersonalNoteStatus.SUCCESS); // Thành công
+    } catch (error) {
+      console.error("Error saving schedule:", error);
+      setPersonalNoteStatus(PersonalNoteStatus.ERROR); // Lỗi
     }
-    await ScheduleService.saveSchedule(saveSchedule);
-    setIsChange(!isChange)
-    setIsNextModal(false);
-    setSchedule([]);
-    handleShowModalCreate(false, '');
   };
   return (
     <>

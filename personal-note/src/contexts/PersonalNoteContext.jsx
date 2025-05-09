@@ -32,7 +32,7 @@ export const PersonalNoteProvider = ({children}) => {
   }, [userProfile]);
 
   return <PersonalNoteContext.Provider value={initValues}>
-          {personalNoteStatus === PersonalNoteStatus.LOADING && <Loading PersonalNoteStatus={personalNoteStatus} />}
+          {personalNoteStatus === PersonalNoteStatus.LOADING && <Loading personalNoteStatus={personalNoteStatus} />}
           {children}
         </PersonalNoteContext.Provider>
 }

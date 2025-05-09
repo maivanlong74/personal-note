@@ -48,14 +48,14 @@ export default function NotePage() {
         UserId: userProfile.id,
         schedules: schedules
       }
-  
-      await ScheduleService.saveSchedule(saveSchedule);
-  
-      setIsChange(!isChange);
+      
       setIsNextModal(false);
       setSchedule([]);
       handleShowModalCreate(false, '');
-  
+
+      await ScheduleService.saveSchedule(saveSchedule);
+
+      setIsChange(!isChange);
       setPersonalNoteStatus(PersonalNoteStatus.SUCCESS); // Thành công
     } catch (error) {
       console.error("Error saving schedule:", error);

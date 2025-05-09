@@ -3,8 +3,11 @@ import { Delete, Edit } from "../../assets/svg/icon";
 import { ModalConfirm } from '../Modal/modal-confirm';
 import { ModalEditSchedule } from '../Modal/modal-edit-schedule';
 import { ScheduleService } from '../../services/ScheduleService';
+import { usePersonalNoteContext } from '../../contexts/PersonalNoteContext';
+import { PersonalNoteStatus } from '../../constants/status';
 
 export const TableScheduleComponent = ({ UserId, IsChange }) => {
+  const { setPersonalNoteStatus } = usePersonalNoteContext();
   const [dialog, setDialog] = useState({ message: "", isLoading: false, title: "", });
   const [schedules, setSchedules] = useState([]);
   const [editing, setEditing] = useState(null); // { parentId, scheduleId }
@@ -12,8 +15,15 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
 
   useEffect(() => {
     const fetchSchedules = async () => {
-      const data = await ScheduleService.getSchedulesById(UserId);
-      setSchedules(data);
+      try {
+        setPersonalNoteStatus(PersonalNoteStatus.LOADING);
+        const data = await ScheduleService.getSchedulesById(UserId);
+        setSchedules(data);
+        setPersonalNoteStatus(PersonalNoteStatus.SUCCESS);
+      } catch (error) {
+        console.error("Lỗi khi xóa:", error);
+        setPersonalNoteStatus(PersonalNoteStatus.ERROR);
+      }
     };
     fetchSchedules();
   }, [IsChange]);
@@ -21,14 +31,17 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
   // Delete
   const confirmDelete = async () => {
     try {
-      await ScheduleService.deleteSchedule(dialog.scheduleParentId, dialog.scheduleId);
       setDialog({ message: "", isLoading: false, title: "", scheduleId: null, scheduleParentId: null });
+      setPersonalNoteStatus(PersonalNoteStatus.LOADING);
+      await ScheduleService.deleteSchedule(dialog.scheduleParentId, dialog.scheduleId);
 
       // Cập nhật lại danh sách
       const updated = await ScheduleService.getSchedulesById(UserId);
       setSchedules(updated);
+      setPersonalNoteStatus(PersonalNoteStatus.SUCCESS);
     } catch (error) {
       console.error("Lỗi khi xóa:", error);
+      setPersonalNoteStatus(PersonalNoteStatus.ERROR);
     }
   };
 
@@ -77,15 +90,17 @@ export const TableScheduleComponent = ({ UserId, IsChange }) => {
           return s;
         });
       }
+      setEditing(null);
+      setEditData({ date: "", note: [] });
+      setPersonalNoteStatus(PersonalNoteStatus.LOADING);
 
       await ScheduleService.updateSchedule(editing.parentId, updatedSchedules);
       const refreshed = await ScheduleService.getSchedulesById(UserId);
+      setPersonalNoteStatus(PersonalNoteStatus.SUCCESS);
       setSchedules(refreshed);
     } catch (error) {
       console.error("Lỗi cập nhật:", error);
-    } finally {
-      setEditing(null);
-      setEditData({ date: "", note: [] });
+      setPersonalNoteStatus(PersonalNoteStatus.ERROR);
     }
   };
 

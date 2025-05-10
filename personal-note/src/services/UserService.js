@@ -13,14 +13,26 @@ const UserService = {
       console.error('Error get data from firestore', error);
       throw error;
     }
-    
+
+  },
+
+  getUser: async () => {
+    try {
+      const cmd = query(membersRef);
+      const user = await getDocs(cmd);
+
+      return user.docs.map(doc => doc.data())[0];
+    } catch (error) {
+      console.error('Error Queue data:', error);
+      throw error;
+    }
   },
 
   getUserByEmail: async (email) => {
     try {
       const cmd = query(membersRef, where('email', '==', email));
       const user = await getDocs(cmd);
-      
+
       return user.docs.map(doc => doc.data())[0];
     } catch (error) {
       console.error('Error Queue data:', error);
@@ -29,4 +41,4 @@ const UserService = {
   },
 }
 
-export {UserService}
+export { UserService }

@@ -2,19 +2,11 @@ import AdminPageRedirection from '../../components/Redirection/AdminPageRedirect
 import { TableScheduleComponent } from '../../components/Table/tableScheduleComponent';
 import { ModalCreateNote } from '../../components/Modal/modal-create-note';
 import { useState } from 'react';
-import parseSchedule from '../../components/CreateSchedule';
 import { useUserContext } from '../../contexts/UserContext';
-import { ScheduleService } from '../../services/ScheduleService';
-import { usePersonalNoteContext } from '../../contexts/PersonalNoteContext';
-import { PersonalNoteStatus } from '../../constants/status';
 
 export default function NotePage() {
   const { userProfile } = useUserContext();
-  const { setPersonalNoteStatus } = usePersonalNoteContext();
   const [dialog, setDialog] = useState({ isLoading: false, title: "", });
-  // State để lưu trữ dữ liệu ghi chú
-  const [isNextModal, setIsNextModal] = useState(false);
-  const [schedules, setSchedule] = useState([]);
   const [isChange, setIsChange] = useState(false);
 
   // tắt bật modal create
@@ -26,42 +18,6 @@ export default function NotePage() {
     setDialog({ isLoading, title });
   }
 
-  // create note
-  const SubmitCreate = (data) => {
-    const scheduleList = parseSchedule(data.noteSchedule) || [];
-    if (scheduleList.length > 0) {
-      setSchedule(prev => [...prev, ...scheduleList]);
-      setIsNextModal(true);
-      handleShowModalCreate(true, 'Kết quả phân tích lịch trình');
-    } else {
-      alert("Không thể phân tích lịch trình");
-      setIsNextModal(false);
-    }
-  };
-
-  // compelete create note
-  const CompleteCreate = async () => {
-    try {
-      setPersonalNoteStatus(PersonalNoteStatus.LOADING); // Bắt đầu loading
-  
-      const saveSchedule = {
-        UserId: userProfile.id,
-        schedules: schedules
-      }
-      
-      setIsNextModal(false);
-      setSchedule([]);
-      handleShowModalCreate(false, '');
-
-      await ScheduleService.saveSchedule(saveSchedule);
-
-      setIsChange(!isChange);
-      setPersonalNoteStatus(PersonalNoteStatus.SUCCESS); // Thành công
-    } catch (error) {
-      console.error("Error saving schedule:", error);
-      setPersonalNoteStatus(PersonalNoteStatus.ERROR); // Lỗi
-    }
-  };
   return (
     <>
       <div className='border border-black w-full h-full flex flex-col'>
@@ -84,14 +40,11 @@ export default function NotePage() {
       {dialog.isLoading && (
         <ModalCreateNote
           title={dialog.title}
-          onDialog={handleShowModalCreate}
-          onSubmit={SubmitCreate}
-          onCompelete={CompleteCreate}
-          nextModal={isNextModal}
-          schedules={schedules}
+          userId={userProfile.id}
+          onClose={() => setDialog({ isLoading: false, title: "" })}
+          onSuccess={() => setIsChange(!isChange)}
         />
       )}
-
     </>
   );
 }

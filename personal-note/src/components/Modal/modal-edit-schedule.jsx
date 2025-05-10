@@ -3,6 +3,7 @@ import { IoClose } from "react-icons/io5";
 import { Delete } from '../../assets/svg/icon';
 
 export const ModalEditSchedule = ({ title, editData, setEditData, onDialog }) => {
+  const today = new Date().toISOString().split("T")[0];
   const handleNoteChange = (index, value) => {
     const newNotes = [...editData.note];
     newNotes[index] = value;
@@ -32,6 +33,7 @@ export const ModalEditSchedule = ({ title, editData, setEditData, onDialog }) =>
           <div className="flex justify-between items-center mb-4">
             <input
               type="date"
+              min={today}
               className="bg-[#c7ecee] p-2 rounded w-1/2"
               value={editData.date}
               onChange={(e) => setEditData({ ...editData, date: e.target.value })}

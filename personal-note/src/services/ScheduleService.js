@@ -14,10 +14,9 @@ const ScheduleService = {
       const newSchedules = data.schedules.map(item => ({
         id: crypto.randomUUID(), // hoặc: Date.now().toString()
         dateSchedule: item.date,
-        noteSchedule: item.content
-          .split('\n')                      // tách từng dòng
-          .map(line => line.trim())        // loại bỏ khoảng trắng
-          .filter(line => line !== "")     // loại bỏ dòng trống
+        noteSchedule: Array.isArray(item.content)
+          ? item.content.map(line => line.trim()).filter(line => line !== "")
+          : [item.content.trim()].filter(line => line !== "")
       }));
 
       if (!existingSnapshot.empty) {
@@ -90,7 +89,7 @@ const ScheduleService = {
         });
         return data;
       });
-      
+
     } catch (error) {
       console.error('Error Queue data:', error);
       throw error;
